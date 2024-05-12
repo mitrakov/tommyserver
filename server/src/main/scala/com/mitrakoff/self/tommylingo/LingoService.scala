@@ -1,11 +1,8 @@
 package com.mitrakoff.self.tommylingo
 
-class LingoService[F[_]](dao: LingoDao[F]) {
-  def getAllKeys(userId: Int, langCode: String): F[List[String]] = dao.fetchAllKeys(userId, langCode)
-
-  def getTranslations(userId: Int, langCode: String): F[List[(String, String)]] = dao.fetchWithLimit(userId, langCode, 25)
+class LingoService[F[_]](dao: LingoDao[F]):
+  def getAll(userId: Int, langCode: String): F[List[(String, String)]] = dao.fetch(userId, langCode)
 
   def upsert(dict: Dict): F[Int] = dao.persist(dict)
 
   def remove(dictKey: DictKey): F[Int] = dao.delete(dictKey)
-}
