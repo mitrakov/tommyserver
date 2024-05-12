@@ -28,16 +28,10 @@ class LingoRoutes[F[_]: Async](service: LingoService[F]) extends Http4sDsl[F]:
     xmlEncoder contramap { list => <result>{list map {case (k, v) => <item key={k}>{v}</item> }}</result> }
 
   val routes: HttpRoutes[F] = HttpRoutes.of {
-    case GET -> Root / "lingo" / "keys" / langCode =>
-      Ok(service.getAllKeys(1, langCode))
-    case GET -> Root / "lingo" / "translations" / langCode =>
-      Ok(service.getTranslations(1, langCode))
+    case GET -> Root / "lingo" / "all" / langCode =>
+      Ok(service.getAll(1, langCode))
     case req @ POST -> Root / "lingo" =>
-      req.as[Dict].flatMap { dict =>
-        service.upsert(dict) *> Ok(<result>ok</result>)
-      }
+      req.as[Dict] flatMap (service.upsert(_) *> Ok(<result>ok</result>))
     case req @ DELETE -> Root / "lingo" =>
-      req.as[DictKey].flatMap { dictKey =>
-        service.remove(dictKey) *> Ok(<result>ok</result>)
-      }
+      req.as[DictKey] flatMap (service.remove(_) *> Ok(<result>ok</result>))
   }
