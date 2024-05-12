@@ -33,7 +33,7 @@ class MyModel extends Model {
     notifyListeners();
   }
 
-  // public methods
+  // methods
   /// sets internal counter to next token; all changes will be propagated by ScopedModel
   void nextToken() {
     _currentToken++;
@@ -69,7 +69,7 @@ class MyModel extends Model {
     else return "Error: ${response.statusCode}; ${response.body}";
   }
 
-  // private methods
+  /// loads all keys and translations from server
   Future<Iterable<TokenPair>> _loadAll() async {
     final response = await http.get(Uri.parse("http://mitrakoff.com:9090/lingo/all/$langCode"));
     if (response.statusCode == 200)

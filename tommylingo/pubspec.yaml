@@ -2,7 +2,7 @@
 name: tommylingo
 description: Tommylingo Mobile App
 version: 24.5.12+9
-publish_to: 'none' # to prevent publish with 'flutter pub publish'
+publish_to: 'none'            # to prevent publish with 'flutter pub publish'
 
 environment:
   sdk: '>=3.2.6 <4.0.0'
@@ -11,7 +11,7 @@ dependencies:
   flutter:
     sdk: flutter
   scoped_model: 2.0.0         # state management
-  http: 1.2.1                 # http support (1.2.1 is incompatible with sdk 3.2.6)
+  http: 1.2.1                 # http support
   xml: 6.5.0                  # xml parsing
   tuple: 2.0.2                # tuples
   flutter_typeahead: 5.2.0    # text field with suggestions
