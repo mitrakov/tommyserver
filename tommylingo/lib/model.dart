@@ -1,4 +1,5 @@
 // ignore_for_file: curly_braces_in_flow_control_structures
+import 'dart:math';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:tuple/tuple.dart';
 import 'package:http/http.dart' as http;
@@ -8,18 +9,17 @@ typedef TokenPair = Tuple2<String, String>;
 
 class MyModel extends Model {
   // variables
+  static final Random _random = Random(DateTime.now().millisecondsSinceEpoch);
   final List<TokenPair> _data = [];
-  final List<String> _keys = [];
   String _langCode = "en-GB";
   int _currentToken = 0;
 
   // getters
   String get langCode => _langCode;
-  List<String> get keys => _keys;
+  Iterable<String> get keys => _data.map((e) => e.item1);
   Future<TokenPair> get token async {
-    if (_currentToken >= _data.length) { // IF data is empty OR _currentToken is overflown
-      _data..clear()..addAll(await _loadMore());
-      _keys..clear()..addAll(await _loadKeys());
+    if (_data.isEmpty) {
+      _data.addAll((await _loadAll()).toList()..shuffle(_random));
       _currentToken = 0;
     }
     return _data.isEmpty ? const TokenPair("", "") : _data[_currentToken];
@@ -29,7 +29,7 @@ class MyModel extends Model {
   set langCode(String value) {
     _langCode = value;
     _data.clear();
-    _keys.clear();
+    _currentToken = 0;
     notifyListeners();
   }
 
@@ -41,7 +41,7 @@ class MyModel extends Model {
   }
 
   String getValue(String key) {
-    return _data.firstWhere((e) => e.item1 == key.trim(), orElse: () => const Tuple2("", "Not implemented")).item2;
+    return _data.firstWhere((e) => e.item1 == key.trim(), orElse: () => Tuple2(key, "Not found")).item2;
   }
 
   /// returns empty string if OK, or error message in case of failure
@@ -70,17 +70,10 @@ class MyModel extends Model {
   }
 
   // private methods
-  Future<Iterable<TokenPair>> _loadMore() async {
-    final response = await http.get(Uri.parse("http://mitrakoff.com:9090/lingo/translations/$langCode"));
+  Future<Iterable<TokenPair>> _loadAll() async {
+    final response = await http.get(Uri.parse("http://mitrakoff.com:9090/lingo/all/$langCode"));
     if (response.statusCode == 200)
       return XmlDocument.parse(response.body).findAllElements("item").map((e) => TokenPair(e.getAttribute("key")!, e.text));
-    else return Future.error("Error: ${response.statusCode}; ${response.body}");
-  }
-
-  Future<Iterable<String>> _loadKeys() async {
-    final response = await http.get(Uri.parse("http://mitrakoff.com:9090/lingo/keys/$langCode"));
-    if (response.statusCode == 200)
-      return XmlDocument.parse(response.body).findAllElements("key").map((e) => e.text);
     else return Future.error("Error: ${response.statusCode}; ${response.body}");
   }
 }
