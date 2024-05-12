@@ -1,16 +1,17 @@
-val http4sVersion = "0.23.18"
-val http4sXmlVersion = "0.23.13"
-val logbackVersion = "1.4.6"
-val doobieVersion = "1.0.0-RC2"
-val circeVersion = "0.14.5"
+val http4sVersion = "1.0.0-M38"
+val http4sXmlVersion = "1.0.0-M38.1" // keep it separate from http4sVersion
+val logbackVersion = "1.5.6"
+val doobieVersion = "1.0.0-RC5"
+val circeVersion = "0.15.0-M1"
 
 organization := "com.mitrakoff.self"
 name := "tommyserver"
-version := "23.12.17" // !!! change version here, then run "sbt docker:publish"
-scalaVersion := "3.2.1"
+version := "24.5.12" // !!! change version here, then run "sbt docker:publish"
+scalaVersion := "3.4.1"
 libraryDependencies ++= Seq(
   "org.http4s"    %% "http4s-ember-server"   % http4sVersion,
   "org.http4s"    %% "http4s-dsl"            % http4sVersion,
+  "org.http4s"    %% "http4s-core"           % http4sVersion,
   "org.http4s"    %% "http4s-circe"          % http4sVersion,
   "org.http4s"    %% "http4s-scala-xml"      % http4sXmlVersion,
   "ch.qos.logback" % "logback-classic"       % logbackVersion,

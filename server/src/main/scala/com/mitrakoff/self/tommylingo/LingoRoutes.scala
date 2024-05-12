@@ -1,7 +1,7 @@
 package com.mitrakoff.self.tommylingo
 
 import cats.effect.Async
-import cats.implicits.{toFlatMapOps, catsSyntaxApply}
+import cats.implicits.{toFlatMapOps, catsSyntaxApplyOps}
 import org.http4s.{EntityDecoder, EntityEncoder, HttpRoutes}
 import org.http4s.dsl.Http4sDsl
 import org.http4s.scalaxml.{xmlDecoder, xmlEncoder}
