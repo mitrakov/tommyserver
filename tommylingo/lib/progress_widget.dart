@@ -23,6 +23,7 @@ class TotalProgressWidgetState extends State<TotalProgressWidget> {
     final lastDay = Settings.instance.getLastDate();
     final now = DateTime.now();
     if (now.difference(lastDay).inDays > 1) {
+      if ( inDays > 0) // а иначе смысл показывать?
       final text = "Sorry, your progress with ${lastDay.difference(firstDay).inDays} days has been reset!";
       Settings.instance.setFirstDateAsToday();
       Settings.instance.setLastDateAsToday();
