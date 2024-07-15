@@ -24,8 +24,11 @@ class LingoRoutes[F[_]: Async](service: LingoService[F]) extends Http4sDsl[F]:
   given keysEncoder: EntityEncoder[F, List[String]] =
     xmlEncoder contramap { list => <keys>{list map(s => {<key>{s}</key>})}</keys> }
 
-  given translationsEncoder: EntityEncoder[F, List[(String, String)]] =
-    xmlEncoder contramap { list => <result>{list map {case (k, v) => <item key={k}>{v}</item> }}</result> }
+  given translationsEncoder: EntityEncoder[F, List[(String, String, Option[String])]] =
+    xmlEncoder contramap { list => <result>{list map {
+      case (k, v, Some(c)) => <item key={k} conjugation={c}>{v}</item>
+      case (k, v, None)    => <item key={k}>{v}</item>
+    }}</result> }
 
   val routes: HttpRoutes[F] = HttpRoutes.of {
     case GET -> Root / "lingo" / "all" / langCode =>
