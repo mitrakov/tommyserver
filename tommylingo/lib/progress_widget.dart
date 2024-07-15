@@ -23,14 +23,16 @@ class TotalProgressWidgetState extends State<TotalProgressWidget> {
     final lastDay = Settings.instance.getLastDate();
     final now = DateTime.now();
     if (now.difference(lastDay).inDays > 1) {
-      if ( inDays > 0) // а иначе смысл показывать?
-      final text = "Sorry, your progress with ${lastDay.difference(firstDay).inDays} days has been reset!";
-      Settings.instance.setFirstDateAsToday();
-      Settings.instance.setLastDateAsToday();
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(text), duration: const Duration(seconds: 5)));
+      final totalDays = lastDay.difference(firstDay).inDays;
+      if ( totalDays > 0) {
+        final text = "Sorry, your progress with $totalDays days has been reset!";
+        Settings.instance.setFirstDateAsToday();
+        Settings.instance.setLastDateAsToday();
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(text), duration: const Duration(seconds: 5)));
+      }
     }
-    _firstDay = Settings.instance.getFirstDate();
-    _lastDay = Settings.instance.getLastDate();
+    _firstDay = Settings.instance.getFirstDate(); // don't reuse!
+    _lastDay = Settings.instance.getLastDate();   // don't reuse!
   }
 
   @override
