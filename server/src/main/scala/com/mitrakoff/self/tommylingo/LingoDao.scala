@@ -17,12 +17,14 @@ CREATE TABLE lingo.dict (
 */
 
 class LingoDao[F[_]](db: Db[F]):
-  def fetch(userId: Int, langCode: String): F[List[(String, String)]] =
-    db.run(sql"""SELECT key, translation FROM lingo.dict WHERE user_id = $userId AND lang_code = $langCode""".query[(String, String)].to[List])
+  def fetch(userId: Int, langCode: String): F[List[(String, String, Option[String])]] =
+    db.run(sql"""SELECT key, translation, conjugaciones FROM lingo.dict LEFT OUTER JOIN lingo.esp_verbos ON key = verbo WHERE user_id = $userId AND lang_code = $langCode""".query[(String, String, Option[String])].to[List])
 
+  @deprecated
   def fetchWithLimitAndRandom(userId: Int, langCode: String, limit: Int): F[List[(String, String)]] =
     db.run(sql"""SELECT key, translation FROM lingo.dict WHERE user_id = $userId AND lang_code = $langCode ORDER BY random() LIMIT $limit;""".query[(String, String)].to[List])
 
+  @deprecated
   def fetchAllKeys(userId: Int, langCode: String): F[List[String]] =
     db.run(sql"""SELECT key FROM lingo.dict WHERE user_id = $userId AND lang_code = $langCode;""".query[String].to[List])
 
