@@ -71,7 +71,7 @@ class MyModel extends Model {
     else return "Error: ${response.statusCode}; ${response.body}";
   }
 
-  /// loads all keys and translations from server
+  /// loads all keys, translations and optional conjugations from server
   Future<Iterable<TokenPair>> _loadAll() async {
     final response = await http.get(Uri.parse("http://mitrakoff.com:9090/lingo/all/$langCode"));
     if (response.statusCode == 200) {
