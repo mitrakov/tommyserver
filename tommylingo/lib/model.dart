@@ -1,11 +1,13 @@
 // ignore_for_file: curly_braces_in_flow_control_structures
+import 'dart:convert';
 import 'dart:math';
 import 'package:scoped_model/scoped_model.dart';
+import 'package:tommylingo/json/verb.dart';
 import 'package:tuple/tuple.dart';
 import 'package:http/http.dart' as http;
 import 'package:xml/xml.dart';
 
-typedef TokenPair = Tuple2<String, String>;
+typedef TokenPair = Tuple3<String, String, Verb?>;
 
 class MyModel extends Model {
   // variables
@@ -22,7 +24,7 @@ class MyModel extends Model {
       _data.addAll((await _loadAll()).toList()..shuffle(_random));
       _currentToken = 0;
     }
-    return _data.isEmpty ? const TokenPair("", "") : _data[_currentToken];
+    return _data.isEmpty ? const TokenPair("", "", null) : _data[_currentToken];
   }
 
   // setters
@@ -41,7 +43,7 @@ class MyModel extends Model {
   }
 
   String getValue(String key) {
-    return _data.firstWhere((e) => e.item1 == key.trim(), orElse: () => Tuple2(key, "Not found")).item2;
+    return _data.firstWhere((e) => e.item1 == key.trim(), orElse: () => TokenPair(key, "Not found", null)).item2;
   }
 
   /// returns empty string if OK, or error message in case of failure
@@ -72,8 +74,16 @@ class MyModel extends Model {
   /// loads all keys and translations from server
   Future<Iterable<TokenPair>> _loadAll() async {
     final response = await http.get(Uri.parse("http://mitrakoff.com:9090/lingo/all/$langCode"));
-    if (response.statusCode == 200)
-      return XmlDocument.parse(response.body).findAllElements("item").map((e) => TokenPair(e.getAttribute("key")!, e.text));
+    if (response.statusCode == 200) {
+      return XmlDocument
+        .parse(response.body)
+        .findAllElements("item")
+        .map((e) {
+          final conjugation = e.getAttribute("conjugation");
+          final verb = conjugation != null ? Verb.fromJson(jsonDecode(conjugation)) : null;
+          return TokenPair(e.getAttribute("key")!, e.text, verb);
+        });
+    }
     else return Future.error("Error: ${response.statusCode}; ${response.body}");
   }
 }
