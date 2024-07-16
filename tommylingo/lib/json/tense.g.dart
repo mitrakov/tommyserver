@@ -24,11 +24,10 @@ Tense _$TenseFromJson(Map<String, dynamic> json) => Tense(
           : Forms.fromJson(json['condicional'] as Map<String, dynamic>),
       json['afirmativo'] == null
           ? null
-          : FormsImperative.fromJson(
-              json['afirmativo'] as Map<String, dynamic>),
+          : Forms.fromJson(json['afirmativo'] as Map<String, dynamic>),
       json['negativo'] == null
           ? null
-          : FormsImperative.fromJson(json['negativo'] as Map<String, dynamic>),
+          : Forms.fromJson(json['negativo'] as Map<String, dynamic>),
       json['imperfecto'] == null
           ? null
           : Forms.fromJson(json['imperfecto'] as Map<String, dynamic>),

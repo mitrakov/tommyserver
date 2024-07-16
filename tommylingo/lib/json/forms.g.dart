@@ -11,15 +11,15 @@ Forms _$FormsFromJson(Map<String, dynamic> json) => Forms(
       json['tú'] as String,
       json['nosotros'] as String,
       json['vosotros'] as String,
-      json['él/ella/Ud.'] as String,
-      json['ellos/ellas/Uds.'] as String,
+      Forms.readEl(json, 'el_ella_usted') as String,
+      Forms.readEllos(json, 'ellos_ustedes') as String,
     );
 
 Map<String, dynamic> _$FormsToJson(Forms instance) => <String, dynamic>{
       'yo': instance.yo,
       'tú': instance.tu,
-      'él/ella/Ud.': instance.el_ella_usted,
+      'el_ella_usted': instance.el_ella_usted,
       'nosotros': instance.nosotros,
       'vosotros': instance.vosotros,
-      'ellos/ellas/Uds.': instance.ellos_ustedes,
+      'ellos_ustedes': instance.ellos_ustedes,
     };
