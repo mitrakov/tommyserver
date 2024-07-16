@@ -14,6 +14,8 @@ CREATE TABLE lingo.dict (
  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
  PRIMARY KEY (user_id, lang_code, key)
 );
+
+Conjugations: https://raw.githubusercontent.com/asosab/esp_verbos/master/esp_verbos.sql
 */
 
 class LingoDao[F[_]](db: Db[F]):

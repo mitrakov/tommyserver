@@ -6,16 +6,22 @@ part 'forms.g.dart';
 @JsonSerializable(explicitToJson: true)
 class Forms {
   final String yo;
+  @JsonKey(name: "tú")
   final String tu;
+  @JsonKey(name: "él/ella/Ud.")
+  final String el_ella_usted;
   final String nosotros;
   final String vosotros;
-  final String el_ella_usted;
-  final String ellos;
+  @JsonKey(name: "ellos/ellas/Uds.")
+  final String ellos_ustedes;
 
-  Forms(this.yo, this.tu, this.nosotros, this.vosotros, this.el_ella_usted, this.ellos);
-
-  //Person(this.id, this.names); // use either public fields, or constructor args, or private fields with getter/setter
+  Forms(this.yo, this.tu, this.nosotros, this.vosotros, this.el_ella_usted, this.ellos_ustedes);
 
   factory Forms.fromJson(Map<String, dynamic> json) => _$FormsFromJson(json);
   Map<String, dynamic> toJson() => _$FormsToJson(this);
+
+  @override
+  String toString() {
+    return 'Forms{yo: $yo, tu: $tu, el_ella_usted: $el_ella_usted, nosotros: $nosotros, vosotros: $vosotros, ellos_ustedes: $ellos_ustedes}';
+  }
 }

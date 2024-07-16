@@ -18,4 +18,9 @@ class Verb {
 
   factory Verb.fromJson(Map<String, dynamic> json) => _$VerbFromJson(json);
   Map<String, dynamic> toJson() => _$VerbToJson(this);
+
+  @override
+  String toString() {
+    return 'Verb{verbo: $verbo, perfecto: $perfecto, imperativo: $imperativo, indicativo: $indicativo, progresivo: $progresivo, subjuntivo: $subjuntivo, perfecto_subjuntivo: $perfecto_subjuntivo}';
+  }
 }

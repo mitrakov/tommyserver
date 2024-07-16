@@ -21,6 +21,7 @@ class LingoRoutes[F[_]: Async](service: LingoService[F]) extends Http4sDsl[F]:
     Dict(DictKey(1, langCode, key), translation)
   }
 
+  @deprecated
   given keysEncoder: EntityEncoder[F, List[String]] =
     xmlEncoder contramap { list => <keys>{list map(s => {<key>{s}</key>})}</keys> }
 
