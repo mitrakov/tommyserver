@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:scoped_model/scoped_model.dart';
-import 'model.dart';
+import '../model.dart';
 
 class NewKey extends StatelessWidget {
   final TextEditingController keyController = TextEditingController();

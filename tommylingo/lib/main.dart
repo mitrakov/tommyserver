@@ -2,10 +2,10 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:tommylingo/model.dart';
-import 'package:tommylingo/new_key.dart';
-import 'package:tommylingo/progress_widget.dart';
+import 'package:tommylingo/widgets/new_key.dart';
+import 'package:tommylingo/widgets/progress_widget.dart';
+import 'package:tommylingo/widgets/utils.dart';
 import 'package:tommylingo/settings.dart';
-import 'package:tommylingo/utils.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // allow "async" in main() method
