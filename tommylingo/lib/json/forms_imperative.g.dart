@@ -1,25 +1,27 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'forms.dart';
+part of 'forms_imperative.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-Forms _$FormsFromJson(Map<String, dynamic> json) => Forms(
+FormsImperative _$FormsImperativeFromJson(Map<String, dynamic> json) =>
+    FormsImperative(
       json['yo'] as String,
       json['tú'] as String,
+      json['Ud.'] as String,
       json['nosotros'] as String,
       json['vosotros'] as String,
-      json['él/ella/Ud.'] as String,
-      json['ellos/ellas/Uds.'] as String,
+      json['Uds.'] as String,
     );
 
-Map<String, dynamic> _$FormsToJson(Forms instance) => <String, dynamic>{
+Map<String, dynamic> _$FormsImperativeToJson(FormsImperative instance) =>
+    <String, dynamic>{
       'yo': instance.yo,
       'tú': instance.tu,
-      'él/ella/Ud.': instance.el_ella_usted,
+      'Ud.': instance.usted,
       'nosotros': instance.nosotros,
       'vosotros': instance.vosotros,
-      'ellos/ellas/Uds.': instance.ellos_ustedes,
+      'Uds.': instance.ustedes,
     };
