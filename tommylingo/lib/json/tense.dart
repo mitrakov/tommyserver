@@ -1,6 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:tommylingo/json/forms.dart';
-import 'package:tommylingo/json/forms_imperative.dart';
 part 'tense.g.dart';
 
 // explicitToJson=true calls `.toJson()` for nested objects (default false)
@@ -14,8 +13,8 @@ class Tense {
   final Forms? condicional;
   final Forms? imperfecto;
   final Forms? imperfecto2;
-  final FormsImperative? afirmativo;
-  final FormsImperative? negativo;
+  final Forms? afirmativo;
+  final Forms? negativo;
 
   Tense(this.futuro, this.pasado, this.presente, this.preterito, this.condicional, this.afirmativo, this.negativo, this.imperfecto, this.imperfecto2);
 

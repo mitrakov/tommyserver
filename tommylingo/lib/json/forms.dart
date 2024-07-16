@@ -5,14 +5,17 @@ part 'forms.g.dart';
 // createFactory=false skips generation of `.fromJson()` for nested objects (default true)
 @JsonSerializable(explicitToJson: true)
 class Forms {
+  static readEl(m, _)    => m["él/ella/Ud."]      ?? m["Ud."];
+  static readEllos(m, _) => m["ellos/ellas/Uds."] ?? m["Uds."];
+
   final String yo;
   @JsonKey(name: "tú")
   final String tu;
-  @JsonKey(name: "él/ella/Ud.")
+  @JsonKey(readValue: readEl)
   final String el_ella_usted;
   final String nosotros;
   final String vosotros;
-  @JsonKey(name: "ellos/ellas/Uds.")
+  @JsonKey(readValue: readEllos)
   final String ellos_ustedes;
 
   Forms(this.yo, this.tu, this.nosotros, this.vosotros, this.el_ella_usted, this.ellos_ustedes);
