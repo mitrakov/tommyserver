@@ -1,29 +1,35 @@
+// ignore_for_file: use_key_in_widget_constructors
+
 import 'package:flutter/material.dart';
 import 'package:spoiler_widget/spoiler_text_widget.dart';
 import 'package:tommylingo/json/forms.dart';
 
 class FormsWidget extends StatelessWidget {
   final Forms forms;
+  final String header;
 
-  const FormsWidget(this.forms);
+  const FormsWidget(this.forms, this.header);
 
   @override
   Widget build(BuildContext context) {
-    return Row(children: [
-      Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        _spoiler(this.forms.yo),
-        const SizedBox(height: 20),
-        _spoiler(this.forms.tu),
-        const SizedBox(height: 20),
-        _spoiler(this.forms.el_ella_usted),
-      ]),
-      const SizedBox(width: 40),
-      Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        _spoiler(this.forms.nosotros),
-        const SizedBox(height: 20),
-        _spoiler(this.forms.vosotros),
-        const SizedBox(height: 20),
-        _spoiler(this.forms.ellos_ustedes),
+    return Column(children: [
+      Text(header, style: const TextStyle(fontSize: 14)),
+      Row(children: [
+        Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          _spoiler(forms.yo),
+          const SizedBox(height: 20),
+          _spoiler(forms.tu),
+          const SizedBox(height: 20),
+          _spoiler(forms.el_ella_usted),
+        ]),
+        const SizedBox(width: 40),
+        Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          _spoiler(forms.nosotros),
+          const SizedBox(height: 20),
+          _spoiler(forms.vosotros),
+          const SizedBox(height: 20),
+          _spoiler(forms.ellos_ustedes),
+        ]),
       ]),
     ]);
   }
@@ -31,7 +37,6 @@ class FormsWidget extends StatelessWidget {
   Widget _spoiler(String text) {
     return RepaintBoundary(child: SpoilerTextWidget(
       enable: true,
-      maxParticleSize: 1.2,
       particleDensity: 15,
       speedOfParticles: 0.3,
       fadeRadius: 1,
