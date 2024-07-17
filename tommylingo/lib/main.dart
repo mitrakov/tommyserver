@@ -2,10 +2,11 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:tommylingo/model.dart';
+import 'package:tommylingo/settings.dart';
+import 'package:tommylingo/widgets/conjugation_esp.dart';
 import 'package:tommylingo/widgets/new_key.dart';
 import 'package:tommylingo/widgets/progress_widget.dart';
 import 'package:tommylingo/widgets/utils.dart';
-import 'package:tommylingo/settings.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // allow "async" in main() method
@@ -89,8 +90,19 @@ class MyApp extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
+                Visibility(
+                  visible: snapshot.hasData && snapshot.data!.item3 != null,
+                  child: FloatingActionButton(
+                    heroTag: "conjugations", // must be present for multiple FA Buttons (https://stackoverflow.com/questions/51125024)
+                    tooltip: "Show conjugations",
+                    backgroundColor: Colors.limeAccent,
+                    child: const Icon(Icons.change_circle_rounded),
+                    onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ConjugationsEsp(snapshot.data!.item3!))),
+                  ),
+                ),
+                const SizedBox(height: 10),
                 FloatingActionButton(
-                  heroTag: "showHint", // must be present for multiple FA Buttons (https://stackoverflow.com/questions/51125024)
+                  heroTag: "showHint",
                   tooltip: "Show hint",
                   backgroundColor: Colors.lightBlue,
                   child: const Icon(Icons.help_rounded),
