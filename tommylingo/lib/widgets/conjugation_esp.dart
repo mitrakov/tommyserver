@@ -13,17 +13,15 @@ class ConjugationsEsp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(verb.verbo)),
-      body: Center(
-        child: Column(children: [
-          Expanded(
-            child: ListView(children: [
-              FormsWidget(verb.indicativo.presente!, "Presente indicativo"),
-              FormsWidget(verb.perfecto.presente!, "Presente perfecto"),
-            ]),
-          ),
-        ]),
-      ),
+      appBar: AppBar(title: Text(verb.verbo, style: const TextStyle(fontWeight: FontWeight.bold))),
+      body: ListView(children: [
+        FormsWidget(verb.indicativo.presente!,    "Presente indicativo"),
+        FormsWidget(verb.perfecto.presente!,      "Presente perfecto"),
+        FormsWidget(verb.indicativo.preterito!,   "Preterito indicativo"),
+        FormsWidget(verb.indicativo.imperfecto!,  "Imperfecto indicativo"),
+        FormsWidget(verb.indicativo.futuro!,      "Futuro indicativo"),
+        FormsWidget(verb.indicativo.condicional!, "Condicional indicativo"),
+      ]),
     );
   }
 }
