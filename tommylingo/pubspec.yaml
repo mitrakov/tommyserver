@@ -1,7 +1,7 @@
 # built with Flutter 3.19.4 (Intel x64), CocoaPods 1.15.2
 name: tommylingo
 description: Tommylingo Mobile App
-version: 24.5.12+9
+version: 24.7.18+10
 publish_to: 'none'            # to prevent publish with 'flutter pub publish'
 
 environment:
