@@ -1,9 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 part 'forms.g.dart';
 
-// explicitToJson=true calls `.toJson()` for nested objects (default false)
-// createFactory=false skips generation of `.fromJson()` for nested objects (default true)
-@JsonSerializable(explicitToJson: true)
 class Forms {
   static readEl(m, _)    => m["él/ella/Ud."]      ?? m["Ud."];
   static readEllos(m, _) => m["ellos/ellas/Uds."] ?? m["Uds."];
