@@ -3,7 +3,6 @@ import 'package:tommylingo/json/tense.dart';
 part 'verb.g.dart';
 
 // explicitToJson=true calls `.toJson()` for nested objects (default false)
-// createFactory=false skips generation of `.fromJson()` for nested objects (default true)
 @JsonSerializable(explicitToJson: true)
 class Verb {
   final String verbo;
