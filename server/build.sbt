@@ -1,12 +1,12 @@
 val http4sVersion = "1.0.0-M38"
 val http4sXmlVersion = "1.0.0-M38.1" // keep it separate from http4sVersion
-val logbackVersion = "1.5.6"
-val doobieVersion = "1.0.0-RC5"
+val logbackVersion = "1.5.18"
+val doobieVersion = "1.0.0-RC8"
 val circeVersion = "0.15.0-M1"
 
 organization := "com.mitrakoff.self"
 name := "tommyserver"
-version := "24.7.15" // !!! change version here, then run "sbt docker:publish"
+version := "25.4.9" // !!! change version here, then run "sbt docker:publish"
 scalaVersion := "3.4.1"
 libraryDependencies ++= Seq(
   "org.http4s"    %% "http4s-ember-server"   % http4sVersion,

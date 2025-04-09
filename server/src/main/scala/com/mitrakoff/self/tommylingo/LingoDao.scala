@@ -19,8 +19,13 @@ Conjugations: https://raw.githubusercontent.com/asosab/esp_verbos/master/esp_ver
 */
 
 class LingoDao[F[_]](db: Db[F]):
+  def fetch(userId: Int, langCode: String, key: String): F[Option[(String, String, Option[String])]] =
+    db.run(sql"""SELECT key, translation, conjugaciones FROM lingo.dict LEFT OUTER JOIN lingo.esp_verbos ON key = verbo WHERE user_id = $userId AND lang_code = $langCode AND key = $key"""
+      .query[(String, String, Option[String])].option)
+
   def fetch(userId: Int, langCode: String): F[List[(String, String, Option[String])]] =
-    db.run(sql"""SELECT key, translation, conjugaciones FROM lingo.dict LEFT OUTER JOIN lingo.esp_verbos ON key = verbo WHERE user_id = $userId AND lang_code = $langCode""".query[(String, String, Option[String])].to[List])
+    db.run(sql"""SELECT key, translation, conjugaciones FROM lingo.dict LEFT OUTER JOIN lingo.esp_verbos ON key = verbo WHERE user_id = $userId AND lang_code = $langCode"""
+      .query[(String, String, Option[String])].to[List])
 
   @deprecated
   def fetchWithLimitAndRandom(userId: Int, langCode: String, limit: Int): F[List[(String, String)]] =
