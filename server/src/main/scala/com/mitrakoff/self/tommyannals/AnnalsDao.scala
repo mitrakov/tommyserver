@@ -1,11 +1,56 @@
 package com.mitrakoff.self.tommyannals
 
-import com.mitrakoff.self.Db
+import com.mitrakoff.self.{Db, Id}
 import doobie.implicits.toSqlInterpolator
 import io.circe.Json
+
 import java.time.LocalDate
 
 // notes: you must specify schema name (`annals.`) explicitly!
+
+/*
+CREATE TABLE annals."user" (
+	user_id serial4 NOT NULL,
+	login varchar(128) NOT NULL,
+	hash varchar(255) NOT NULL,
+	created_at timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
+	CONSTRAINT user_login_key UNIQUE (login),
+	CONSTRAINT user_pkey PRIMARY KEY (user_id)
+);
+CREATE TABLE annals."event" (
+	event_id serial4 NOT NULL,
+	user_id int4 NOT NULL,
+	"name" varchar(128) NOT NULL,
+	description varchar(255) NULL,
+	created_at timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
+	CONSTRAINT event_pkey PRIMARY KEY (event_id),
+	CONSTRAINT event_user_name UNIQUE (user_id, name),
+	CONSTRAINT event_user_id_fkey FOREIGN KEY (user_id) REFERENCES annals."user"(user_id) ON DELETE RESTRICT ON UPDATE CASCADE
+);
+CREATE TABLE annals.param (
+	param_id serial4 NOT NULL,
+	event_id int4 NOT NULL,
+	"name" varchar(128) NOT NULL,
+	description varchar(255) NULL,
+	"type" annals."paramtype" DEFAULT 'S'::annals.paramtype NOT NULL,
+	unit varchar(64) NULL,
+	default_value varchar(255) NULL,
+	created_at timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
+	CONSTRAINT param_event_name UNIQUE (event_id, name),
+	CONSTRAINT param_pkey PRIMARY KEY (param_id),
+	CONSTRAINT param_event_id_fkey FOREIGN KEY (event_id) REFERENCES annals."event"(event_id) ON DELETE RESTRICT ON UPDATE CASCADE
+);
+CREATE TABLE annals.chronicle (
+	id bigserial NOT NULL,
+	"date" date DEFAULT now() NOT NULL,
+	event_id int4 NOT NULL,
+	params jsonb NOT NULL,
+	"comment" varchar(255) NULL,
+	created_at timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
+	CONSTRAINT chronicle_pkey PRIMARY KEY (id),
+	CONSTRAINT chronicle_event_id_fkey FOREIGN KEY (event_id) REFERENCES annals."event"(event_id) ON DELETE RESTRICT ON UPDATE CASCADE
+);
+*/
 class AnnalsDao[F[_]](db: Db[F]):
   case class Chronicle(date: LocalDate, eventName: String, params: Json, comment: Option[String])
   case class EventParam(eventName: String, eventDescription: Option[String], name: String, description: Option[String], `type`: String, unit: Option[String], defaultValue: Option[String])
