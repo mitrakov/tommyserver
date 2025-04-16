@@ -3,7 +3,7 @@ package com.mitrakoff.self.tommyannals
 import cats.data.{Kleisli, OptionT}
 import cats.effect.Concurrent
 import cats.Applicative
-import com.mitrakoff.self.AuthService
+import com.mitrakoff.self.{AuthService, Id}
 import org.http4s.circe.{jsonEncoderOf, jsonOf}
 import org.http4s.dsl.Http4sDsl
 import org.http4s.headers.Authorization

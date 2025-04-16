@@ -41,5 +41,5 @@ class LingoDao[F[_]](db: Db[F]):
            ON CONFLICT (user_id, lang_code, key) DO UPDATE SET translation = ${dict.translation}
            ;""".update.run)
 
-  def delete(dictKey: DictKey): F[Int] = // TODO: make remove by PK!
+  def delete(dictKey: DictKey): F[Int] =
     db.run(sql"""DELETE FROM lingo.dict WHERE user_id = ${dictKey.userId} AND lang_code = ${dictKey.langCode} AND key = ${dictKey.key};""".update.run)

@@ -1,6 +1,7 @@
 package com.mitrakoff.self.tommyannals
 
 import cats.{Applicative, Monad}
+import com.mitrakoff.self.Id
 import java.time.LocalDate
 
 class AnnalsService[F[_]: Monad](dao: AnnalsDao[F]):
@@ -17,8 +18,7 @@ class AnnalsService[F[_]: Monad](dao: AnnalsDao[F]):
 
   def add(userId: Id, r: Chronicle): F[Int] =
     import cats.implicits.toFlatMapOps
-    dao.findEventId(userId, r.eventName) flatMap { eventIdOpt =>
-      eventIdOpt match
-        case Some(eventId) => dao.insert(r.date, eventId, r.params, r.comment)
-        case None => implicitly[Applicative[F]].pure(0)
+    dao.findEventId(userId, r.eventName) flatMap {
+      case Some(eventId) => dao.insert(r.date, eventId, r.params, r.comment)
+      case None => implicitly[Applicative[F]].pure(0)
     }
