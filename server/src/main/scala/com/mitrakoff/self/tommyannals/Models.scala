@@ -4,8 +4,6 @@ import io.circe.{Codec, Encoder, Json}
 import io.circe.generic.semiauto.{deriveCodec, deriveEncoder}
 import java.time.LocalDate
 
-type Id = Int
-
 // === Chronicle ===
 case class Chronicle(date: LocalDate, eventName: String, params: Json, comment: Option[String])
 
