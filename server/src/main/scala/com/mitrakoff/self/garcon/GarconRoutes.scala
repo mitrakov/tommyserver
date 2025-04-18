@@ -2,13 +2,14 @@ package com.mitrakoff.self.garcon
 
 import cats.{Applicative, Monad}
 import cats.data.{Kleisli, OptionT}
-import com.mitrakoff.self.{AuthService, Id}
+import com.mitrakoff.self.auth.{AuthService, Id}
 import org.http4s.circe.jsonEncoderOf
 import org.http4s.{AuthedRoutes, EntityEncoder, HttpRoutes, Request}
 import org.http4s.dsl.Http4sDsl
 import org.http4s.headers.Authorization
 import org.http4s.server.AuthMiddleware
 
+// curl http: //mitrakoff.com:9090/garcon/words?page=0 -H "Authorization: bearer 555"
 class GarconRoutes[F[_]: Monad](authService: AuthService[F], garconService: GarconService[F]) extends Http4sDsl[F]:
   private final val garcon = "garcon"
   private object PageMatcher extends QueryParamDecoderMatcher[Int]("page")

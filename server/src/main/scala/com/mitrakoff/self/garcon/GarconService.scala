@@ -1,7 +1,7 @@
 package com.mitrakoff.self.garcon
 
 import cats.Functor
-import com.mitrakoff.self.Id
+import com.mitrakoff.self.auth.Id
 
 class GarconService[F[_]: Functor](dao: GarconDao[F]):
   def getNext(userId: Id, page: Int): F[List[Word]] =

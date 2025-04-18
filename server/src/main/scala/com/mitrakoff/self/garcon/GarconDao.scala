@@ -1,6 +1,7 @@
 package com.mitrakoff.self.garcon
 
-import com.mitrakoff.self.{Db, Id}
+import com.mitrakoff.self.Db
+import com.mitrakoff.self.auth.Id
 import doobie.implicits.toSqlInterpolator
 
 /*

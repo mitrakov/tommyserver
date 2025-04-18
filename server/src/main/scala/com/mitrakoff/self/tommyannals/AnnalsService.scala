@@ -1,7 +1,7 @@
 package com.mitrakoff.self.tommyannals
 
 import cats.{Applicative, Monad}
-import com.mitrakoff.self.Id
+import com.mitrakoff.self.auth.Id
 import java.time.LocalDate
 
 class AnnalsService[F[_]: Monad](dao: AnnalsDao[F]):
