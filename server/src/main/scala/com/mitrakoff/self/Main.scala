@@ -2,6 +2,7 @@ package com.mitrakoff.self
 
 import cats.effect.{Async, IO, IOApp, Resource}
 import com.comcast.ip4s.{ipv4, port}
+import com.mitrakoff.self.auth.{AuthDao, AuthService}
 import com.mitrakoff.self.garcon.{GarconDao, GarconRoutes, GarconService}
 import com.mitrakoff.self.tommyannals.{AnnalsDao, AnnalsRoutes, AnnalsService}
 import com.mitrakoff.self.tommylingo.{LingoDao, LingoRoutes, LingoService}
@@ -17,15 +18,16 @@ object Main extends IOApp.Simple:
 
   private def run[F[_]: Async]: F[Nothing] = {
     import cats.implicits.toSemigroupKOps
-    val authService: AuthService[F] = AuthService()
 
     createTransactor() use { tx =>
       val db: Db[F] = Db(tx)
 
+      val authDao: AuthDao[F] = AuthDao(db)
       val lingoDao: LingoDao[F] = LingoDao(db)
       val annalsDao: AnnalsDao[F] = AnnalsDao(db)
       val garconDao: GarconDao[F] = GarconDao(db)
 
+      val authService: AuthService[F] = AuthService(authDao)
       val lingoService: LingoService[F] = LingoService(lingoDao)
       val annalsService: AnnalsService[F] = AnnalsService(annalsDao)
       val garconService: GarconService[F] = GarconService(garconDao)
