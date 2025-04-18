@@ -35,7 +35,7 @@ class GarconDao[F[_]](db: Db[F]):
   case class Word(word: String, translations: String)
 
   def fetchNext(userId: Id, page: Int, limit: Int = 20): F[List[Word]] =
-    import doobie.implicits.derived
+    import doobie.implicits.autoDerivedRead
     val offset = page * limit
     val sql = sql"""SELECT word, translations FROM garcon.word ORDER BY frequency DESC OFFSET $offset LIMIT $limit;"""
     db.run(sql.query[Word].to[List])

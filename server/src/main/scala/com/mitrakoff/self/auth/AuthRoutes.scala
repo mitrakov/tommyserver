@@ -8,7 +8,7 @@ import org.http4s.*
 class AuthRoutes[F[_]: Concurrent](authService: AuthService[F]) extends Http4sDsl[F]:
   val routes: HttpRoutes[F] =
     HttpRoutes.of {
-      case req@POST -> Root / "auth" =>
+      case req@POST -> Root / "login" =>
         import cats.implicits.{toFlatMapOps, toFunctorOps, catsSyntaxApplicativeId}
         given EntityDecoder[F, AuthData] = jsonOf
 
@@ -16,7 +16,7 @@ class AuthRoutes[F[_]: Concurrent](authService: AuthService[F]) extends Http4sDs
           request <- req.as[AuthData]
           either <- authService.auth(request.login, request.hash)
           response <- either match
-            case Right(token) => Ok(token)
+            case Right(token) => Ok().map(_.addCookie(ResponseCookie("token", token)))
             case Left(err) => Response(status = Status.Unauthorized).pure[F]
         } yield response
     }
