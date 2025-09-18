@@ -9,6 +9,7 @@ val circeVersion = "0.15.0-M1"
 // 2. make sure to build under x86_64 platform (Apple Silicon will fail on "linux/amd64" platform)
 // 3. run:
 // sbt docker:publish
+// docker login
 // docker push mitrakov/tommy-server:1.2.3"
 version := "1.4.17"
 organization := "com.mitrakoff.self"
