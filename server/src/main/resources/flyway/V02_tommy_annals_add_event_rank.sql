@@ -1,0 +1,1 @@
+ALTER TABLE annals.event ADD COLUMN rank int2 NOT NULL DEFAULT 100;
