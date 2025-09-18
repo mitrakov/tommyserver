@@ -23,6 +23,7 @@ CREATE TABLE annals."event" (
 	user_id int4 NOT NULL,
 	"name" varchar(128) NOT NULL,
 	description varchar(255) NULL,
+  rank int2 NOT NULL DEFAULT 100,
 	created_at timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
 	CONSTRAINT event_pkey PRIMARY KEY (event_id),
 	CONSTRAINT event_user_name UNIQUE (user_id, name),
@@ -63,7 +64,7 @@ class AnnalsDao[F[_]](db: Db[F]):
     db.run(sql"""SELECT date, event.name, params, comment
                  FROM annals.chronicle
                  INNER JOIN annals.event USING(event_id)
-                 WHERE date = $date AND user_id = $userId;""".query[Chronicle].to[List]
+                 WHERE date = $date AND user_id = $userId ORDER BY rank;""".query[Chronicle].to[List]
     )
 
   def fetchSchema(userId: Id): F[List[EventParam]] =
