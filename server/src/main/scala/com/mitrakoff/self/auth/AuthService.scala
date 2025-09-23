@@ -10,7 +10,7 @@ import pdi.jwt.{JwtAlgorithm, JwtCirce, JwtClaim}
 import java.time.Instant
 import java.time.temporal.ChronoUnit.DAYS
 
-type Id = Int
+type Id = Long
 
 class AuthService[F[_]: MonadThrow](dao: AuthDao[F]):
   private val secretKey = sys.env.getOrElse("SECRET_KEY", throw new IllegalStateException("Please provide SECRET_KEY env variable"))

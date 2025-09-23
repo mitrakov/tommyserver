@@ -28,7 +28,7 @@ class MyModel extends Model {
   }
 
   Future<String> addForDate(DateTime date, String eventName, Map<String, dynamic> params, String? comment) {
-    return _addForDate(date, Chronicle(_extractDate(date), eventName, params, comment));
+    return _addForDate(date, Chronicle(null, _extractDate(date), eventName, params, comment));
   }
 
   Future<String> _addForDate(DateTime key, Chronicle item) async {
