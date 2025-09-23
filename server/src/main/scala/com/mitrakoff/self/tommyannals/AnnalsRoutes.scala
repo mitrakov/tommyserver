@@ -29,6 +29,7 @@ class AnnalsRoutes[F[_]: Concurrent](authService: AuthService[F], annalsService:
     }
 
     AuthMiddleware(authUser, onFailure).apply(AuthedRoutes.of {
+      // curl -H "Authorization: bearer XXX" http://mitrakoff.com:9090/annals/schema
       case GET -> Root / `annals` / "schema" as userId =>
         given EntityEncoder[F, List[SchemaResponse]] = jsonEncoderOf
         for {
@@ -36,6 +37,7 @@ class AnnalsRoutes[F[_]: Concurrent](authService: AuthService[F], annalsService:
           response <- Ok(schema)
         } yield response
 
+      // curl -H "Authorization: bearer XXX" http://mitrakoff.com:9090/annals/2025-09-20
       case GET -> Root / `annals` / date as userId =>
         given EntityEncoder[F, List[Chronicle]] = jsonEncoderOf
         Try(LocalDate.parse(date)) match
@@ -53,5 +55,9 @@ class AnnalsRoutes[F[_]: Concurrent](authService: AuthService[F], annalsService:
           response <- Ok(s"$rows row(s) added")
         } yield response
 
-      case DELETE -> Root / `annals` as userId => Ok(s"DEL: $userId")
+      case DELETE -> Root / `annals` / LongVar(id) as userId =>
+        for {
+          rows <- annalsService.delete(id)
+          response <- Ok(s"$rows row(s) deleted")
+        } yield response
     })

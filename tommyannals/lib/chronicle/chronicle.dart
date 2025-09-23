@@ -4,12 +4,13 @@ part 'chronicle.g.dart';
 
 @JsonSerializable()
 class Chronicle {
+  final int? id;
   final String date; // 2012-12-12 format
   final String eventName;
   final Map<String, dynamic> params;
   final String? comment;
 
-  Chronicle(this.date, this.eventName, this.params, this.comment);
+  Chronicle(this.id, this.date, this.eventName, this.params, this.comment);
 
   Map<String, dynamic> toJson() => _$ChronicleToJson(this);
   factory Chronicle.fromJson(Map<String, dynamic> json) => _$ChronicleFromJson(json);

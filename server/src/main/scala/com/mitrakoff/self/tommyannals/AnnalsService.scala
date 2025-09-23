@@ -6,8 +6,7 @@ import java.time.LocalDate
 
 class AnnalsService[F[_]: Monad](dao: AnnalsDao[F]):
   def getAllForDate(userId: Id, date: LocalDate): F[List[Chronicle]] =
-    import cats.implicits.toFunctorOps
-    dao.fetchAllForDate(userId, date).map( _.map(c => Chronicle(c.date, c.eventName, c.params, c.comment)) )
+    dao.fetchAllForDate(userId, date)
 
   def getSchema(userId: Id): F[List[SchemaResponse]] =
     import cats.implicits.toFunctorOps
@@ -22,3 +21,6 @@ class AnnalsService[F[_]: Monad](dao: AnnalsDao[F]):
       case Some(eventId) => dao.insert(r.date, eventId, r.params, r.comment)
       case None => implicitly[Applicative[F]].pure(0)
     }
+
+  def delete(chronicleId: Id): F[Int] =
+    dao.deleteById(chronicleId)
