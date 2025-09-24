@@ -31,10 +31,23 @@ class MyModel extends Model {
     return _addForDate(date, Chronicle(null, _extractDate(date), eventName, params, comment));
   }
 
+  Future<String> removeByChronicleId(DateTime date, int chronicleId) => _removeItem(date, chronicleId);
+
   Future<String> _addForDate(DateTime key, Chronicle item) async {
     final body = json.encode(item.toJson());
     print("POST http://mitrakoff.com:9090/annals: $body");
     final response = await http.post(Uri.parse("http://mitrakoff.com:9090/annals"), headers: {"Authorization": "bearer 555"}, body: body);
+    print("> ${response.body}");
+    if (response.statusCode == 200) {
+      _date2data.remove(key);
+      notifyListeners();
+      return response.body;
+    } else return Future.error("Error: ${response.statusCode}; ${response.body}");
+  }
+
+  Future<String> _removeItem(DateTime key, int id) async {
+    print("DELETE http://mitrakoff.com:9090/annals/$id");
+    final response = await http.delete(Uri.parse("http://mitrakoff.com:9090/annals/$id"), headers: {"Authorization": "bearer 555"});
     print("> ${response.body}");
     if (response.statusCode == 200) {
       _date2data.remove(key);
