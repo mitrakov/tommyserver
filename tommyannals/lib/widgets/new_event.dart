@@ -37,7 +37,8 @@ class _NewEventWidgetState extends State<NewEventWidget> {
           final children = [
             const SizedBox(height: 10),
             TypeAheadField<String>(
-              builder: (context, _, focusNode) => TextField(controller: eventNameCtrl, focusNode: focusNode, decoration: decor),
+              controller: eventNameCtrl,
+              builder: (context, ctrl, focusNode) => TextField(controller: ctrl, focusNode: focusNode, decoration: decor),
               suggestionsCallback: (prefix) {
                 final list = List<String>.from(eventNames);
                 list.retainWhere((s) => s.toLowerCase().contains(prefix.toLowerCase()));
