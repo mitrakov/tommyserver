@@ -2,20 +2,26 @@ PODS:
   - Flutter (1.0.0)
   - flutter_keyboard_visibility (0.0.1):
     - Flutter
+  - flutter_platform_alert (0.0.1):
+    - Flutter
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
   - flutter_keyboard_visibility (from `.symlinks/plugins/flutter_keyboard_visibility/ios`)
+  - flutter_platform_alert (from `.symlinks/plugins/flutter_platform_alert/ios`)
 
 EXTERNAL SOURCES:
   Flutter:
     :path: Flutter
   flutter_keyboard_visibility:
     :path: ".symlinks/plugins/flutter_keyboard_visibility/ios"
+  flutter_platform_alert:
+    :path: ".symlinks/plugins/flutter_platform_alert/ios"
 
 SPEC CHECKSUMS:
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
   flutter_keyboard_visibility: 4625131e43015dbbe759d9b20daaf77e0e3f6619
+  flutter_platform_alert: bf3b5fcd4ac14bd637e20527e9c471633071afd3
 
 PODFILE CHECKSUM: c4c93c5f6502fe2754f48404d3594bf779584011
 
