@@ -7,7 +7,7 @@ part of 'chronicle.dart';
 // **************************************************************************
 
 Chronicle _$ChronicleFromJson(Map<String, dynamic> json) => Chronicle(
-      json['id'] as int?,
+      (json['id'] as num?)?.toInt(),
       json['date'] as String,
       json['eventName'] as String,
       json['params'] as Map<String, dynamic>,

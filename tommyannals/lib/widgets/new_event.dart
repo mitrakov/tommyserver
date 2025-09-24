@@ -31,19 +31,20 @@ class _NewEventWidgetState extends State<NewEventWidget> {
 
           final eventNames = snapshot.data!.map((e) => e.eventName);
           final eventName = eventNameCtrl.text;
-          final eventDescription   = eventName.isNotEmpty ? snapshot.data!.firstWhere((schema) => schema.eventName == eventName).eventDescription : null;
+          final eventDescription   = eventName.isNotEmpty ? snapshot.data!.firstWhere((schema) => schema.eventName == eventName).eventDescriptionUtf8 : null;
           final List<Param> params = eventName.isNotEmpty ? snapshot.data!.firstWhere((schema) => schema.eventName == eventName).params : [];
+          const decor = InputDecoration(border: OutlineInputBorder(), labelText: "Nombre del evento");
           final children = [
             const SizedBox(height: 10),
             TypeAheadField<String>(
-              textFieldConfiguration: TextFieldConfiguration(controller: eventNameCtrl, decoration: const InputDecoration(border: OutlineInputBorder(), labelText: "Nombre del evento")),
+              builder: (context, _, focusNode) => TextField(controller: eventNameCtrl, focusNode: focusNode, decoration: decor),
               suggestionsCallback: (prefix) {
                 final list = List<String>.from(eventNames);
                 list.retainWhere((s) => s.toLowerCase().contains(prefix.toLowerCase()));
                 return list;
               },
               itemBuilder: (context, suggestion) => ListTile(title: Text(suggestion)),
-              onSuggestionSelected: (newValue) => setState(() {
+              onSelected: (newValue) => setState(() {
                 eventNameCtrl.text = newValue;
                 paramNames2Values.clear();
               }),
