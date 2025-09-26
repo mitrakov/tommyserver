@@ -3,7 +3,6 @@ package com.mitrakoff.self
 import cats.effect.{Async, IO, IOApp, Resource}
 import com.comcast.ip4s.{ipv4, port}
 import com.mitrakoff.self.auth.{AuthDao, AuthService}
-import com.mitrakoff.self.garcon.{GarconDao, GarconRoutes, GarconService}
 import com.mitrakoff.self.tommyannals.{AnnalsDao, AnnalsRoutes, AnnalsService}
 import com.mitrakoff.self.tommylingo.{LingoDao, LingoRoutes, LingoService}
 import doobie.hikari.HikariTransactor
@@ -25,18 +24,15 @@ object Main extends IOApp.Simple:
       val authDao: AuthDao[F] = AuthDao(db)
       val lingoDao: LingoDao[F] = LingoDao(db)
       val annalsDao: AnnalsDao[F] = AnnalsDao(db)
-      val garconDao: GarconDao[F] = GarconDao(db)
 
       val authService: AuthService[F] = AuthService(authDao)
       val lingoService: LingoService[F] = LingoService(lingoDao)
       val annalsService: AnnalsService[F] = AnnalsService(annalsDao)
-      val garconService: GarconService[F] = GarconService(garconDao)
 
       val lingoRoutes: LingoRoutes[F] = LingoRoutes(lingoService)
       val annalsRoutes: AnnalsRoutes[F] = AnnalsRoutes(authService, annalsService)
-      val garconRoutes: GarconRoutes[F] = GarconRoutes(authService, garconService)
 
-      val httpApp: HttpApp[F] = (lingoRoutes.routes <+> annalsRoutes.routes <+> garconRoutes.routes).orNotFound
+      val httpApp: HttpApp[F] = (lingoRoutes.routes <+> annalsRoutes.routes).orNotFound
       val finalHttpApp: HttpApp[F] = Logger.httpApp(logHeaders = true, logBody = true)(httpApp)
 
       EmberServerBuilder.default[F].withHost(ipv4"0.0.0.0").withPort(port"8080").withHttpApp(finalHttpApp).build.useForever
