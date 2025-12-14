@@ -25,6 +25,7 @@ CREATE TABLE annals."event" (
 	description varchar(255) NULL,
   rank int2 NOT NULL DEFAULT 100,
 	created_at timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
+	deprecated_at timestamp NULL,
 	CONSTRAINT event_pkey PRIMARY KEY (event_id),
 	CONSTRAINT event_user_name UNIQUE (user_id, name),
 	CONSTRAINT event_user_id_fkey FOREIGN KEY (user_id) REFERENCES annals."user"(user_id) ON DELETE RESTRICT ON UPDATE CASCADE
@@ -71,7 +72,7 @@ class AnnalsDao[F[_]](db: Db[F]):
     db.run(sql"""SELECT event.name, event.description, param.name, param.description, param.type, param.unit, param.default_value
                  FROM annals.event
                  INNER JOIN annals.param USING(event_id)
-                 WHERE user_id = $userId;""".query[EventParam].to[List]
+                 WHERE user_id = $userId AND deprecated_at IS NULL;""".query[EventParam].to[List]
     )
 
   def insert(date: LocalDate, eventId: Id, params: Json, comment: Option[String]): F[Int] =

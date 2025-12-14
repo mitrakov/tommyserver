@@ -11,7 +11,7 @@ val circeVersion = "0.15.0-M1"
 // sbt docker:publish
 // docker login
 // docker push mitrakov/tommy-server:1.2.3"
-version := "1.4.18"
+version := "1.5.0"
 organization := "com.mitrakoff.self"
 name := "tommyserver"
 scalaVersion := "3.4.1"
