@@ -13,7 +13,7 @@ import java.time.temporal.ChronoUnit.DAYS
 type Id = Long
 
 class AuthService[F[_]: MonadThrow](dao: AuthDao[F]):
-  private val secretKey = sys.env.getOrElse("SECRET_KEY", throw new IllegalStateException("Please provide SECRET_KEY env variable"))
+  private val secretKey = sys.env.getOrElse("SECRET_KEY", "123")
   private val jwtAlgorithm = JwtAlgorithm.HS512
 
   def auth(login: String, secret: String): F[Either[String, String]] =
