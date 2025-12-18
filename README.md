@@ -1,2 +1,2 @@
-# tommylingo
-TommyLingo project!
+# Tommyserver
+Tommylingo + Tommy Annals projects
