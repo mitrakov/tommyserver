@@ -1,4 +1,3 @@
-// ignore_for_file: use_key_in_widget_constructors, curly_braces_in_flow_control_structures
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
@@ -31,8 +30,10 @@ class _NewEventWidgetState extends State<NewEventWidget> {
 
           final eventNames = snapshot.data!.map((e) => e.eventName);
           final eventName = eventNameCtrl.text;
-          final eventDescription   = eventName.isNotEmpty ? snapshot.data!.firstWhere((schema) => schema.eventName == eventName).eventDescription : null;
-          final List<Param> params = eventName.isNotEmpty ? snapshot.data!.firstWhere((schema) => schema.eventName == eventName).params : [];
+          final eventDescription =
+            eventName.isNotEmpty ? snapshot.data!.firstWhere((schema) => schema.eventName == eventName).eventDescription : null;
+          final List<Param> params =
+            eventName.isNotEmpty ? snapshot.data!.firstWhere((schema) => schema.eventName == eventName).params : [];
           const decor = InputDecoration(border: OutlineInputBorder(), labelText: "Nombre del evento");
           final children = [
             const SizedBox(height: 10),
@@ -52,7 +53,7 @@ class _NewEventWidgetState extends State<NewEventWidget> {
               hideOnEmpty: true,
             ),
             SizedBox(height: eventDescription != null ? 10 : 0),
-            Padding(padding: const EdgeInsets.only(left: 12), child: Text(eventDescription ?? "", textScaleFactor: 0.9)),
+            Padding(padding: const EdgeInsets.only(left: 12), child: Text(eventDescription ?? "", textScaler:TextScaler.linear(0.9))),
             const SizedBox(height: 10),
             ...params.map(_makeParamWidget),
           ];
@@ -86,8 +87,8 @@ class _NewEventWidgetState extends State<NewEventWidget> {
       }
     }
 
-    if (p.defaultValue != null) // onChange() is not called on TextFormField when "initialValue" is assigned, so we need to store initial values explicitly
-      storeParam(p.defaultValue!);
+    if (p.defaultValue != null)    // onChange() is not called on TextFormField when "initialValue" is assigned, so we need to
+      storeParam(p.defaultValue!); // store initial values explicitly
     final isNumeric = p.type == "N";
     return TrixContainer(child: ListTile(
       title: Text(p.name),
@@ -96,7 +97,7 @@ class _NewEventWidgetState extends State<NewEventWidget> {
         width: 170,
         child: TextFormField(
           initialValue: p.defaultValue,
-          inputFormatters: isNumeric ? [FilteringTextInputFormatter.allow(RegExp(r'[\d.,]'))] : null,  // digits, "." for Android, "," for iOS
+          inputFormatters: isNumeric ? [FilteringTextInputFormatter.allow(RegExp(r'[\d.,]'))] : null,  // "." for Android, "," for iOS
           keyboardType: isNumeric ? const TextInputType.numberWithOptions(decimal: true) : null, // TODO: add Boolean type
           decoration: InputDecoration(border: const OutlineInputBorder(), labelText: p.unit != null ? "Valor (${p.unit})" : "Valor"),
           onChanged: (s) {

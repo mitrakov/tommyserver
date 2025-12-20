@@ -1,4 +1,3 @@
-// ignore_for_file: use_key_in_widget_constructors, use_build_context_synchronously
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:scoped_model/scoped_model.dart';
@@ -21,7 +20,10 @@ class NewKey extends StatelessWidget {
   Widget build(BuildContext context) {
     return ScopedModelDescendant<MyModel>(builder: (context, child, model) {
       return Scaffold(
-        appBar: AppBar(title: Text(token != null ? 'Edit "${token!.item1}" for ${model.langCode}' : "New translation for ${model.langCode}")),
+        appBar: AppBar(title: Text(token != null
+            ? 'Edit "${token!.item1}" for ${model.langCode}'
+            : "New translation for ${model.langCode}"
+        )),
         body: Center(
           child: Column(
             children: [
@@ -40,13 +42,15 @@ class NewKey extends StatelessWidget {
                 },
                 itemBuilder: (context, suggestion) => ListTile(title: Text(suggestion)),
                 onSelected: (newValue) {
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(model.getValue(newValue)), duration: const Duration(seconds: 1)));
+                  ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text(model.getValue(newValue)), duration: const Duration(seconds: 1)));
                   keyController.text = newValue;
                 },
                 hideOnEmpty: true,
               ),
               const SizedBox(height: 20),
-              TextField(controller: translationController, decoration: const InputDecoration(border: OutlineInputBorder(), labelText: "Translation")),
+              TextField(controller: translationController,
+                  decoration: const InputDecoration(border: OutlineInputBorder(), labelText: "Translation")),
               const SizedBox(height: 10),
               ElevatedButton(
                 onPressed: () async {
@@ -54,7 +58,9 @@ class NewKey extends StatelessWidget {
                   final translation = translationController.text;
                   if (key.isNotEmpty && translation.isNotEmpty) {
                     final error = await model.upsertTranslation(key, translation);
-                    final bar = SnackBar(content: Text(error.isEmpty ? "Success!" : error), duration: const Duration(seconds: 3), backgroundColor: error.isEmpty ? Colors.green : Colors.red);
+                    final bar = SnackBar(content: Text(error.isEmpty ? "Success!" : error),
+                        duration: const Duration(seconds: 3), backgroundColor: error.isEmpty ? Colors.green : Colors.red
+                    );
                     ScaffoldMessenger.of(context).showSnackBar(bar);
                     if (error.isEmpty) Navigator.pop(context);
                   }

@@ -55,7 +55,7 @@ class _MyAppState extends State<MyApp> {
                 }
               },
             ),
-            const Text("Eventos", textScaleFactor: 1.4),
+            const Text("Eventos", textScaler: TextScaler.linear(1.4)),
             Expanded(child: EventsForDateViewer(_focusedDate)),
           ],
         ),
