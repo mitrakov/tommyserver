@@ -1,6 +1,7 @@
 // ignore_for_file: use_key_in_widget_constructors
 
 import 'package:flutter/material.dart';
+import 'package:spoiler_widget/models/text_spoiler_configs.dart';
 import 'package:spoiler_widget/spoiler_text_widget.dart';
 import 'package:tommylingo/json/forms.dart';
 import 'package:tommylingo/widgets/trix_container.dart';
@@ -41,13 +42,14 @@ class FormsWidget extends StatelessWidget {
   }
 
   Widget _spoiler(String text) {
-    return RepaintBoundary(child: SpoilerTextWidget(
-      enable: true,
-      fadeRadius: 1,
-      enableGesture: true,
-      particleColor: const Color(0xFF81C784),
+    return RepaintBoundary(child: SpoilerText(
       text: text,
-      style: const TextStyle(color: Colors.black),
+      config: TextSpoilerConfig(
+        isEnabled: true,
+        enableFadeAnimation: true,
+        enableGestureReveal: true,
+        textStyle: TextStyle(fontSize: 16, color: Colors.black),
+      ),
     ));
   }
 }

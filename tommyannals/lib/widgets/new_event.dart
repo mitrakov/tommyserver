@@ -31,7 +31,7 @@ class _NewEventWidgetState extends State<NewEventWidget> {
 
           final eventNames = snapshot.data!.map((e) => e.eventName);
           final eventName = eventNameCtrl.text;
-          final eventDescription   = eventName.isNotEmpty ? snapshot.data!.firstWhere((schema) => schema.eventName == eventName).eventDescriptionUtf8 : null;
+          final eventDescription   = eventName.isNotEmpty ? snapshot.data!.firstWhere((schema) => schema.eventName == eventName).eventDescription : null;
           final List<Param> params = eventName.isNotEmpty ? snapshot.data!.firstWhere((schema) => schema.eventName == eventName).params : [];
           const decor = InputDecoration(border: OutlineInputBorder(), labelText: "Nombre del evento");
           final children = [
@@ -74,33 +74,33 @@ class _NewEventWidgetState extends State<NewEventWidget> {
     storeParam(String value) {
       switch (p.type) {
         case "S":
-          paramNames2Values[p.nameUtf8] = value.trim();
+          paramNames2Values[p.name] = value.trim();
           break;
         case "N":
-          paramNames2Values[p.nameUtf8] = int.tryParse(value.trim()) ?? double.tryParse(value.trim().replaceAll(",", "."));
+          paramNames2Values[p.name] = int.tryParse(value.trim()) ?? double.tryParse(value.trim().replaceAll(",", "."));
           break;
         case "B":
-          paramNames2Values[p.nameUtf8] = value.trim().toLowerCase() == "true";
+          paramNames2Values[p.name] = value.trim().toLowerCase() == "true";
           break;
         // add other types here
       }
     }
 
-    if (p.defaultValueUtf8 != null) // onChange() is not called on TextFormField when "initialValue" is assigned, so we need to store initial values explicitly
-      storeParam(p.defaultValueUtf8!);
+    if (p.defaultValue != null) // onChange() is not called on TextFormField when "initialValue" is assigned, so we need to store initial values explicitly
+      storeParam(p.defaultValue!);
     final isNumeric = p.type == "N";
     return TrixContainer(child: ListTile(
-      title: Text(p.nameUtf8),
-      subtitle: Text(p.descriptionUtf8 ?? "Ninguna descripción"),
+      title: Text(p.name),
+      subtitle: Text(p.description ?? "Ninguna descripción"),
       trailing: SizedBox(
         width: 170,
         child: TextFormField(
-          initialValue: p.defaultValueUtf8,
+          initialValue: p.defaultValue,
           inputFormatters: isNumeric ? [FilteringTextInputFormatter.allow(RegExp(r'[\d.,]'))] : null,  // digits, "." for Android, "," for iOS
           keyboardType: isNumeric ? const TextInputType.numberWithOptions(decimal: true) : null, // TODO: add Boolean type
-          decoration: InputDecoration(border: const OutlineInputBorder(), labelText: p.unitUtf8 != null ? "Valor (${p.unitUtf8})" : "Valor"),
+          decoration: InputDecoration(border: const OutlineInputBorder(), labelText: p.unit != null ? "Valor (${p.unit})" : "Valor"),
           onChanged: (s) {
-            if (s.isEmpty) paramNames2Values.remove(p.nameUtf8);
+            if (s.isEmpty) paramNames2Values.remove(p.name);
             else storeParam(s);
           },
         )

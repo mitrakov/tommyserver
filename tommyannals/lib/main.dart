@@ -7,6 +7,14 @@ import 'package:tommyannals/model.dart';
 import 'package:tommyannals/widgets/events4date.dart';
 import 'package:tommyannals/widgets/new_event.dart';
 
+/*
+Build for iOS:
+  bump version in pubspec.yaml
+  flutter build ios
+  xCode: Product -> Destination -> Any iOS Device (arm64)
+  xCode: Product -> Archive -> Distribute App -> Release Testing
+  rename and move *.ipa file to _dist
+ */
 void main() {
   initializeDateFormatting(); // to load locales for TableCalendar
   runApp(ScopedModel(model: MyModel()..schema, child: MyApp()));

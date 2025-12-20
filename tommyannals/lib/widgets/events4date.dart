@@ -27,8 +27,8 @@ class EventsForDateViewer extends StatelessWidget {
 
   Widget _createTile(MyModel model, Chronicle item) {
     return TrixContainer(child: ListTile(
-      title: Text(item.eventNameUtf8, textScaleFactor: 1.2),
-      subtitle: Text(json.encode(item.paramsUtf8), textScaleFactor: 0.85),
+      title: Text(item.eventName, textScaleFactor: 1.2),
+      subtitle: Text(json.encode(item.params), textScaleFactor: 0.85),
       onLongPress: () async {
         const hdr = "Borrar evento";
         final txt = "¿Estás seguro que quieres borrar: '${item.eventName}' (${item.date})?";

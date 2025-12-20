@@ -1,26 +1,24 @@
-# built with Flutter 3.19.4 (Intel x64), Dart 3.3.2, CocoaPods 1.16.2
+# built with Flutter 3.38.5 (Mac Apple M1), Dart 3.10.4, CocoaPods 1.16.2, xCode 26.2
 name: tommyannals
 description: Tommy Annals Mobile App
-version: 1.0.5+5
-publish_to: 'none' # to prevent publish with 'flutter pub publish'
+version: 1.0.6+6
 
 environment:
-  sdk: '>=3.3.2 <4.0.0'
+  sdk: '>=3.10.3 <4.0.0'
 
 dependencies:
   flutter:
     sdk: flutter
   scoped_model: 2.0.0                # state management
-  http: 1.2.2                        # http support (max-version)
+  http: 1.6.0                        # http support
   json_annotation: 4.9.0             # json auto-generation
   table_calendar: 3.2.0              # calendar widget
   flutter_typeahead: 5.2.0           # text field with suggestions
   flutter_platform_alert: 0.8.0      # native dialogs
 
 dev_dependencies:
-  flutter_lints: 4.0.0               # lints (max-version)
-  build_runner: 2.4.9                # json auto-generation (max-version)
-  json_serializable: 6.8.0           # json auto-generation (max-version)
+  build_runner: 2.10.4               # json auto-generation
+  json_serializable: 6.11.3          # json auto-generation
 
 flutter:
   uses-material-design: true
