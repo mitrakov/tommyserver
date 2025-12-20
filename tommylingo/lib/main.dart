@@ -1,4 +1,3 @@
-// ignore_for_file: use_key_in_widget_constructors, use_build_context_synchronously, curly_braces_in_flow_control_structures
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:tommylingo/model.dart';
@@ -105,7 +104,9 @@ class MyApp extends StatelessWidget {
                     tooltip: "Show conjugations",
                     backgroundColor: Colors.limeAccent,
                     child: const Icon(Icons.change_circle_rounded),
-                    onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ConjugationsEsp(snapshot.data!.item3!))),
+                    onPressed: () => Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => ConjugationsEsp(snapshot.data!.item3!))
+                    ),
                   ),
                 ),
                 const SizedBox(height: 10),
@@ -144,9 +145,12 @@ class MyApp extends StatelessWidget {
                   child: const Icon(Icons.delete_forever_rounded),
                   onPressed: () {
                     if (snapshot.hasData && snapshot.data!.item1.isNotEmpty) {
-                      Utils.showYesNoDialog(context, "Delete translation", "Are you sure you want to remove '${snapshot.data!.item1}'?", () async {
+                      final ask = "Are you sure you want to remove '${snapshot.data!.item1}'?";
+                      Utils.showYesNoDialog(context, "Delete translation", ask, () async {
                         final error = await model.deleteTranslation(snapshot.data!.item1);
-                        final bar = SnackBar(content: Text(error.isEmpty ? "Deleted!" : error), duration: const Duration(seconds: 3), backgroundColor: error.isEmpty ? Colors.green : Colors.red);
+                        final bar = SnackBar(content: Text(error.isEmpty ? "Deleted!" : error),
+                            duration: const Duration(seconds: 3), backgroundColor: error.isEmpty ? Colors.green : Colors.red
+                        );
                         ScaffoldMessenger.of(context).showSnackBar(bar);
                         if (error.isEmpty) model.nextToken();
                       });

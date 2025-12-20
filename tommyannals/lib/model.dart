@@ -36,7 +36,8 @@ class MyModel extends Model {
   Future<String> _addForDate(DateTime key, Chronicle item) async {
     final body = json.encode(item.toJson());
     print("POST http://mitrakoff.com:9090/annals: $body");
-    final response = await http.post(Uri.parse("http://mitrakoff.com:9090/annals"), headers: {"Authorization": "bearer 555"}, body: body);
+    final response =
+        await http.post(Uri.parse("http://mitrakoff.com:9090/annals"), headers: {"Authorization": "bearer 555"}, body: body);
     print("> ${response.body}");
     if (response.statusCode == 200) {
       _date2data.remove(key);
@@ -59,7 +60,8 @@ class MyModel extends Model {
   Future<List<Chronicle>> _loadForDate(DateTime date) async {
     final formatted = _extractDate(date);
     print("GET http://mitrakoff.com:9090/annals/$formatted");
-    final response = await http.get(Uri.parse("http://mitrakoff.com:9090/annals/$formatted"), headers: {"Authorization": "bearer 555"});
+    final response =
+        await http.get(Uri.parse("http://mitrakoff.com:9090/annals/$formatted"), headers: {"Authorization": "bearer 555"});
     print("> ${response.body}");
     if (response.statusCode == 200) {
       final list = json.decode(response.body) as List<dynamic>;
