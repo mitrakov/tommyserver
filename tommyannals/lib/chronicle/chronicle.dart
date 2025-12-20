@@ -15,10 +15,6 @@ class Chronicle {
   Map<String, dynamic> toJson() => _$ChronicleToJson(this);
   factory Chronicle.fromJson(Map<String, dynamic> json) => _$ChronicleFromJson(json);
 
-  String  get eventNameUtf8 => utf8.decode(eventName.runes.toList());
-  Map<String, dynamic> get paramsUtf8 => params.map((k, v) => MapEntry(utf8.decode(k.runes.toList()), v is String ? utf8.decode(v.runes.toList()) : v));
-  String? get commentUtf8 => comment != null ? utf8.decode(comment!.runes.toList()) : null;
-
   @override
   String toString() => 'Chronicle{date: $date, eventName: $eventName, params: $params, comment: $comment}';
 }

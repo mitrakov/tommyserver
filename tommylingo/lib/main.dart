@@ -8,6 +8,14 @@ import 'package:tommylingo/widgets/new_key.dart';
 import 'package:tommylingo/widgets/progress_widget.dart';
 import 'package:tommylingo/widgets/utils.dart';
 
+/*
+Build for iOS:
+  bump version in pubspec.yaml
+  flutter build ios
+  xCode: Product -> Destination -> Any iOS Device (arm64)
+  xCode: Product -> Archive -> Distribute App -> Release Testing
+  rename and move *.ipa file to _dist
+ */
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // allow "async" in main() method
   await Settings.instance.init();
