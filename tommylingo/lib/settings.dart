@@ -1,4 +1,3 @@
-// ignore_for_file: curly_braces_in_flow_control_structures
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Settings {

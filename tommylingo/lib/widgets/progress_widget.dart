@@ -1,4 +1,3 @@
-// ignore_for_file: curly_braces_in_flow_control_structures
 import 'package:flutter/material.dart';
 import 'package:tommylingo/settings.dart';
 
@@ -44,7 +43,9 @@ class TotalProgressWidgetState extends State<TotalProgressWidget> {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text("$_questionsDone/${widget._QUESTIONS}", style: TextStyle(color: isOkToday ? Colors.green : Colors.redAccent, fontSize: 16, fontWeight: FontWeight.bold)),
+          Text("$_questionsDone/${widget._QUESTIONS}",
+              style: TextStyle(color: isOkToday ? Colors.green : Colors.redAccent, fontSize: 16, fontWeight: FontWeight.bold)
+          ),
           const SizedBox(width: 10),
           Text("Total days: $totalDays"),
         ],
