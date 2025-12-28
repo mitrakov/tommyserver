@@ -26,7 +26,7 @@ flutter:
 
 flutter_launcher_icons:
   ios: true
-  image_path: "assets/appicon.png"
+  image_path: "appicon.png"
   macos:
     generate: true
-    image_path: "assets/appicon.png"
+    image_path: "appicon.png"
