@@ -1,1 +1,0 @@
-- minor: you can bump your day, close the app, and bump your day again
