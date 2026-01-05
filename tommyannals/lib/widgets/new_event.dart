@@ -78,10 +78,20 @@ class _NewEventWidgetState extends State<NewEventWidget> {
           paramNames2Values[p.name] = value.trim();
           break;
         case "N":
-          paramNames2Values[p.name] = int.tryParse(value.trim()) ?? double.tryParse(value.trim().replaceAll(",", "."));
+          paramNames2Values[p.name] = int.tryParse(value) ?? double.tryParse(value.replaceAll(",", ".")) ?? 0;
           break;
         case "B":
           paramNames2Values[p.name] = value.trim().toLowerCase() == "true";
+          break;
+        case "S[]":
+          paramNames2Values[p.name] = value.split(",").map((t) => t.trim()).where((t) => t.isNotEmpty).toList();
+          break;
+        case "N[]":
+          paramNames2Values[p.name] = value.split(",").map((t) => int.tryParse(t) ?? double.tryParse(t.replaceAll(",", ".")) ?? 0)
+              .toList();
+          break;
+        case "B[]":
+          paramNames2Values[p.name] = value.split(",").map((t) => t.trim().toLowerCase() == "true").toList();
           break;
         // add other types here
       }

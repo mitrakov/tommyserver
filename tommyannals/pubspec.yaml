@@ -1,7 +1,7 @@
 # built with Flutter 3.38.5 (Mac Apple M1), Dart 3.10.4, CocoaPods 1.16.2, xCode 26.2
 name: tommyannals
 description: Tommy Annals Mobile App
-version: 1.1.0+7
+version: 1.1.1+8
 
 environment:
   sdk: '>=3.10.3 <4.0.0'
@@ -15,6 +15,7 @@ dependencies:
   table_calendar: 3.2.0              # calendar widget
   flutter_typeahead: 5.2.0           # text field with suggestions
   flutter_platform_alert: 0.8.0      # native dialogs
+  package_info_plus: 9.0.0           # build info
 
 dev_dependencies:
   build_runner: 2.10.4               # generate json schema, run "flutter pub run build_runner build"
