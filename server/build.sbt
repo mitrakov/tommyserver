@@ -12,7 +12,7 @@ val circeJwtVersion = "11.0.3"
 // sbt docker:publish
 // docker login
 // docker push mitrakov/tommy-server:1.2.3"
-version := "1.5.1"
+version := "1.5.2"
 organization := "com.mitrakoff.self"
 name := "tommyserver"
 scalaVersion := "3.4.1"
