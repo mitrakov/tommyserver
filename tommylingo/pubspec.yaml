@@ -16,7 +16,6 @@ dependencies:
   flutter_typeahead: 5.2.0    # text field with suggestions
   shared_preferences: 2.5.4   # key-value storage
   json_annotation: 4.9.0      # parsing json
-  spoiler_widget: 1.0.18      # spoiler widget like in Telegram
 
 dev_dependencies:
   build_runner: 2.10.4        # generate json schema, run "flutter pub run build_runner build"
