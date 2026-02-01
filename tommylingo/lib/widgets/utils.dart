@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 
 class Utils {
   static Future<AlertDialog?> showMessage(BuildContext context, String title, String text) {
-    return showDialog<AlertDialog>(
+    return showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text(title),
           content: Text(text),
-          actions: <Widget>[
+          actions: [
             TextButton(
               child: const Text("OK"),
               onPressed: () => Navigator.of(context).pop(),
@@ -20,13 +20,13 @@ class Utils {
   }
 
   static Future<AlertDialog?> showYesNoDialog(BuildContext context, String title, String text, VoidCallback onYes) {
-    return showDialog<AlertDialog>(
+    return showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text(title),
           content: Text(text),
-          actions: <Widget>[
+          actions: [
             TextButton(
               child: const Text("Yes"),
               onPressed: () {

@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:tommylingo/model.dart';
-import 'package:tommylingo/settings.dart';
-import 'package:tommylingo/widgets/conjugation_esp.dart';
 import 'package:tommylingo/widgets/new_key.dart';
-import 'package:tommylingo/widgets/progress_widget.dart';
 import 'package:tommylingo/widgets/utils.dart';
 
 /*
@@ -17,12 +14,10 @@ Build for iOS:
  */
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // allow "async" in main() method
-  await Settings.instance.init();
   runApp(ScopedModel(model: MyModel(), child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
-  final progressKey = GlobalKey();
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -34,7 +29,6 @@ class MyApp extends StatelessWidget {
           return Scaffold(
             appBar: AppBar(
               title: const Text("Tommylingo"),
-              actions: [TotalProgressWidget(key: progressKey)],
             ),
             body: snapshot.hasData
               ? GestureDetector(
@@ -46,7 +40,6 @@ class MyApp extends StatelessWidget {
                         behavior: SnackBarBehavior.floating,
                         margin: const EdgeInsets.only(top: 1),
                       ));
-                    (progressKey.currentState as TotalProgressWidgetState).addOne();
                     model.nextToken();
                   },
                   child: Center(
@@ -97,18 +90,6 @@ class MyApp extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                Visibility(
-                  visible: snapshot.hasData && snapshot.data!.item3 != null,
-                  child: FloatingActionButton(
-                    heroTag: "conjugations", // must be present for multiple FA Buttons (https://stackoverflow.com/questions/51125024)
-                    tooltip: "Show conjugations",
-                    backgroundColor: Colors.limeAccent,
-                    child: const Icon(Icons.change_circle_rounded),
-                    onPressed: () => Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => ConjugationsEsp(snapshot.data!.item3!))
-                    ),
-                  ),
-                ),
                 const SizedBox(height: 10),
                 FloatingActionButton(
                   heroTag: "showHint",

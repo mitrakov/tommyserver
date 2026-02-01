@@ -4,8 +4,8 @@ import 'package:scoped_model/scoped_model.dart';
 import '../model.dart';
 
 class NewKey extends StatelessWidget {
-  final TextEditingController keyController = TextEditingController();
-  final TextEditingController translationController = TextEditingController();
+  final keyController = TextEditingController();
+  final translationController = TextEditingController();
   final TokenPair? token;
 
   NewKey({this.token}) {
@@ -43,7 +43,7 @@ class NewKey extends StatelessWidget {
                 itemBuilder: (context, suggestion) => ListTile(title: Text(suggestion)),
                 onSelected: (newValue) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text(model.getValue(newValue)), duration: const Duration(seconds: 1)));
+                    SnackBar(content: Text(model.getValue(newValue)), duration: const Duration(seconds: 1)));
                   keyController.text = newValue;
                 },
                 hideOnEmpty: true,

@@ -7,14 +7,14 @@ class TrixContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.all(2),
-        child: Container(
-            padding: const EdgeInsets.all(4),
-            decoration: BoxDecoration(
-                border: Border.all(color: const Color(0xFFBDBDBD), width: 0.7), borderRadius: BorderRadius.circular(8)
-            ),
-            child: child
-        )
+      padding: const .all(2),
+      child: Container(
+        padding: const .all(4),
+        decoration: BoxDecoration(
+            border: .all(color: const Color(0xFFBDBDBD), width: 0.7), borderRadius: .circular(8)
+        ),
+        child: child,
+      ),
     );
   }
 }
