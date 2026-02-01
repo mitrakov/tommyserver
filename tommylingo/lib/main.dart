@@ -42,15 +42,17 @@ class MyApp extends StatelessWidget {
                       ));
                     model.nextToken();
                   },
-                  child: Center(
+                  child: Container(
+                    alignment: .center,
+                    decoration: BoxDecoration(), // to detect gestures outside the Text
                     child: Column(
-                      mainAxisSize: MainAxisSize.min,
                       children: [
+                        SizedBox(height: 160),
                         Text(
                           snapshot.data!.translation.isNotEmpty ? snapshot.data!.translation : "Press ☰ and choose language...",
-                          style: Theme.of(context).textTheme.headlineSmall,
+                          textAlign: .center,
+                          style: TextStyle(fontSize: 30),
                         ),
-                        const SizedBox(height: 120) // to make a text a bit higher
                       ],
                     ),
                   ),
