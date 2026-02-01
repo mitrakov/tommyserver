@@ -8,12 +8,7 @@ class Utils {
         return AlertDialog(
           title: Text(title, textAlign: .center),
           content: Text(text, textAlign: .center),
-          actions: [
-            OutlinedButton(
-              child: const Text("OK"),
-              onPressed: () => Navigator.of(context).pop(),
-            ),
-          ],
+          actions: [OutlinedButton(child: const Text("OK"), onPressed: Navigator.of(context).pop)],
         );
       },
     );
@@ -36,7 +31,7 @@ class Utils {
             ),
             TextButton(
               child: const Text("No"),
-              onPressed: () => Navigator.of(context).pop(),
+              onPressed: Navigator.of(context).pop,
             ),
           ],
         );
