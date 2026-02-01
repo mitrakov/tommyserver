@@ -11,8 +11,8 @@ class NewKey extends StatelessWidget {
   NewKey({this.token}) {
     final token = this.token;
     if (token != null) {
-      keyController.text = token.item1;
-      translationController.text = token.item2;
+      keyController.text = token.key;
+      translationController.text = token.translation;
     }
   }
 
@@ -21,7 +21,7 @@ class NewKey extends StatelessWidget {
     return ScopedModelDescendant<MyModel>(builder: (context, child, model) {
       return Scaffold(
         appBar: AppBar(title: Text(token != null
-            ? 'Edit "${token!.item1}" for ${model.langCode}'
+            ? 'Edit "${token!.key}" for ${model.langCode}'
             : "New translation for ${model.langCode}"
         )),
         body: Center(

@@ -33,9 +33,9 @@ class MyApp extends StatelessWidget {
             body: snapshot.hasData
               ? GestureDetector(
                   onTap: () {
-                    if (snapshot.data!.item1.isNotEmpty)
+                    if (snapshot.data!.key.isNotEmpty)
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                        content: Text(snapshot.data!.item1),
+                        content: Text(snapshot.data!.key),
                         duration: const Duration(seconds: 1),
                         behavior: SnackBarBehavior.floating,
                         margin: const EdgeInsets.only(top: 1),
@@ -47,7 +47,7 @@ class MyApp extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(
-                          snapshot.data!.item2.isNotEmpty ? snapshot.data!.item2 : "Press ☰ and choose language...",
+                          snapshot.data!.translation.isNotEmpty ? snapshot.data!.translation : "Press ☰ and choose language...",
                           style: Theme.of(context).textTheme.headlineSmall,
                         ),
                         const SizedBox(height: 120) // to make a text a bit higher
@@ -97,8 +97,8 @@ class MyApp extends StatelessWidget {
                   backgroundColor: Colors.lightBlue,
                   child: const Icon(Icons.help_rounded),
                   onPressed: () {
-                    if (snapshot.hasData && snapshot.data!.item1.isNotEmpty) {
-                      Utils.showMessage(context, snapshot.data!.item2, snapshot.data!.item1);
+                    if (snapshot.hasData && snapshot.data!.key.isNotEmpty) {
+                      Utils.showMessage(context, snapshot.data!.translation, snapshot.data!.key);
                     }
                   },
                 ),
@@ -125,10 +125,10 @@ class MyApp extends StatelessWidget {
                   backgroundColor: Colors.red,
                   child: const Icon(Icons.delete_forever_rounded),
                   onPressed: () {
-                    if (snapshot.hasData && snapshot.data!.item1.isNotEmpty) {
-                      final ask = "Are you sure you want to remove '${snapshot.data!.item1}'?";
+                    if (snapshot.hasData && snapshot.data!.key.isNotEmpty) {
+                      final ask = "Are you sure you want to remove '${snapshot.data!.key}'?";
                       Utils.showYesNoDialog(context, "Delete translation", ask, () async {
-                        final error = await model.deleteTranslation(snapshot.data!.item1);
+                        final error = await model.deleteTranslation(snapshot.data!.key);
                         final bar = SnackBar(content: Text(error.isEmpty ? "Deleted!" : error),
                             duration: const Duration(seconds: 3), backgroundColor: error.isEmpty ? Colors.green : Colors.red
                         );
