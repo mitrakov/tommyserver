@@ -50,7 +50,7 @@ class NewKey extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               TextField(controller: translationController,
-                  decoration: const InputDecoration(border: OutlineInputBorder(), labelText: "Translation")),
+                decoration: const InputDecoration(border: OutlineInputBorder(), labelText: "Translation")),
               const SizedBox(height: 10),
               ElevatedButton(
                 onPressed: () async {
@@ -59,10 +59,11 @@ class NewKey extends StatelessWidget {
                   if (key.isNotEmpty && translation.isNotEmpty) {
                     final error = await model.upsertTranslation(key, translation);
                     final bar = SnackBar(content: Text(error.isEmpty ? "Success!" : error),
-                        duration: const Duration(seconds: 3), backgroundColor: error.isEmpty ? Colors.green : Colors.red
+                      duration: const Duration(seconds: 3), backgroundColor: error.isEmpty ? Colors.green : Colors.red
                     );
                     ScaffoldMessenger.of(context).showSnackBar(bar);
-                    if (error.isEmpty) Navigator.pop(context);
+                    if (error.isEmpty)
+                      Navigator.pop(context);
                   }
                 },
                 child: const Text("OK")

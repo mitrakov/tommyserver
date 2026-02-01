@@ -14,7 +14,6 @@ Build for iOS:
   rename and move *.ipa file to _dist
  */
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized(); // allow "async" in main() method
   runApp(ScopedModel(model: MyModel(), child: MyApp()));
 }
 
@@ -23,8 +22,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: "Tommylingo",
-      theme: ThemeData(primarySwatch: Colors.green),
-      debugShowCheckedModeBanner: false,
       home: ScopedModelDescendant<MyModel>(builder: (context, child, model) {
         return FutureBuilder(future: model.token, builder: (context, snapshot) {
           return Scaffold(
