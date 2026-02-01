@@ -1,12 +1,7 @@
-import 'dart:convert';
 import 'dart:math';
 import 'package:scoped_model/scoped_model.dart';
-import 'package:tommylingo/json/verb.dart';
-import 'package:tuple/tuple.dart';
 import 'package:http/http.dart' as http;
 import 'package:xml/xml.dart';
-
-typedef TokenPair = Tuple3<String, String, Verb?>;
 
 class MyModel extends Model {
   // variables
@@ -17,13 +12,13 @@ class MyModel extends Model {
 
   // getters
   String get langCode => _langCode;
-  Iterable<String> get keys => _data.map((e) => e.item1);
+  Iterable<String> get keys => _data.map((e) => e.key);
   Future<TokenPair> get token async {
     if (_data.isEmpty) {
       _data.addAll((await _loadAll()).toList()..shuffle(_random));
       _currentToken = 0;
     }
-    return _data.isEmpty ? const TokenPair("", "", null) : _data[_currentToken];
+    return _data.isEmpty ? TokenPair("", "") : _data[_currentToken];
   }
 
   // setters
@@ -42,7 +37,7 @@ class MyModel extends Model {
   }
 
   String getValue(String key) {
-    return _data.firstWhere((e) => e.item1 == key.trim(), orElse: () => TokenPair(key, "Not found", null)).item2;
+    return _data.firstWhere((e) => e.key == key.trim(), orElse: () => TokenPair(key, "Not found")).translation;
   }
 
   /// returns empty string if OK, or error message in case of failure
@@ -77,12 +72,15 @@ class MyModel extends Model {
       return XmlDocument
         .parse(response.body)
         .findAllElements("item")
-        .map((e) {
-          final conjugation = e.getAttribute("conjugation");
-          final verb = conjugation != null ? Verb.fromJson(jsonDecode(conjugation)) : null;
-          return TokenPair(e.getAttribute("key")!, e.text, verb);
-        });
+        .map((e) => TokenPair(e.getAttribute("key")!, e.text));
     }
     else return Future.error("Error: ${response.statusCode}; ${response.body}");
   }
+}
+
+class TokenPair {
+  final String key;
+  final String translation;
+
+  TokenPair(this.key, this.translation);
 }
