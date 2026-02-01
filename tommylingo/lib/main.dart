@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:tommylingo/model.dart';
 import 'package:tommylingo/widgets/new_key.dart';
@@ -28,7 +29,17 @@ class MyApp extends StatelessWidget {
         return FutureBuilder(future: model.token, builder: (context, snapshot) {
           return Scaffold(
             appBar: AppBar(
-              title: const Text("Tommylingo"),
+              centerTitle: true,
+              title: const Text("Tommylingo", style: TextStyle(fontWeight: .bold)),
+              actions: [
+                IconButton(icon: const Icon(Icons.arrow_back_ios),    onPressed: model.prevToken),
+                IconButton(icon: const Icon(Icons.arrow_forward_ios), onPressed: model.nextToken),
+                IconButton(icon: const Icon(Icons.info_outline), onPressed: () async {
+                  final i = await PackageInfo.fromPlatform();
+                  final copyright = "Copyright © 2024-2026\nmitrakov-artem@yandex.ru\nAll rights reserved.";
+                  Utils.showMessage(context, i.appName, "v${i.version} (build: ${i.buildNumber})\n\n$copyright");
+                }),
+              ],
             ),
             body: snapshot.hasData
               ? GestureDetector(
@@ -36,9 +47,9 @@ class MyApp extends StatelessWidget {
                     if (snapshot.data!.key.isNotEmpty)
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                         content: Text(snapshot.data!.key),
-                        duration: const Duration(seconds: 1),
+                        duration: const Duration(milliseconds: 1300),
                         behavior: SnackBarBehavior.floating,
-                        margin: const EdgeInsets.only(top: 1),
+                        margin: const .only(top: 1),
                       ));
                     model.nextToken();
                   },
@@ -89,38 +100,33 @@ class MyApp extends StatelessWidget {
               ]),
             ),
             floatingActionButton: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.end,
+              spacing: 10,
+              mainAxisSize: .min,
               children: [
-                const SizedBox(height: 10),
                 FloatingActionButton(
                   heroTag: "showHint",
                   tooltip: "Show hint",
-                  backgroundColor: Colors.lightBlue,
+                  backgroundColor: Colors.green,
                   child: const Icon(Icons.help_rounded),
                   onPressed: () {
-                    if (snapshot.hasData && snapshot.data!.key.isNotEmpty) {
+                    if (snapshot.hasData && snapshot.data!.key.isNotEmpty)
                       Utils.showMessage(context, snapshot.data!.translation, snapshot.data!.key);
-                    }
                   },
                 ),
-                const SizedBox(height: 10),
                 FloatingActionButton(
                   heroTag: "add",
                   tooltip: "Add translation key",
-                  backgroundColor: Colors.deepPurpleAccent,
+                  backgroundColor: Colors.blueAccent,
                   child: const Icon(Icons.add_circle_rounded),
                   onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => NewKey())),
                 ),
-                const SizedBox(height: 10),
                 FloatingActionButton(
                   heroTag: "edit",
                   tooltip: "Edit translation key",
-                  backgroundColor: Colors.brown,
+                  backgroundColor: Colors.brown[400],
                   child: const Icon(Icons.edit_rounded),
                   onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => NewKey(token: snapshot.data))),
                 ),
-                const SizedBox(height: 10),
                 FloatingActionButton(
                   heroTag: "delete",
                   tooltip: "Delete translation key",
@@ -132,7 +138,7 @@ class MyApp extends StatelessWidget {
                       Utils.showYesNoDialog(context, "Delete translation", ask, () async {
                         final error = await model.deleteTranslation(snapshot.data!.key);
                         final bar = SnackBar(content: Text(error.isEmpty ? "Deleted!" : error),
-                            duration: const Duration(seconds: 3), backgroundColor: error.isEmpty ? Colors.green : Colors.red
+                          duration: const Duration(seconds: 3), backgroundColor: error.isEmpty ? Colors.green : Colors.red
                         );
                         ScaffoldMessenger.of(context).showSnackBar(bar);
                         if (error.isEmpty) model.nextToken();

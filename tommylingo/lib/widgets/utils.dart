@@ -6,10 +6,10 @@ class Utils {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text(title),
-          content: Text(text),
+          title: Text(title, textAlign: .center),
+          content: Text(text, textAlign: .center),
           actions: [
-            TextButton(
+            OutlinedButton(
               child: const Text("OK"),
               onPressed: () => Navigator.of(context).pop(),
             ),

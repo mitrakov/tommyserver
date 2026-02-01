@@ -13,6 +13,7 @@ dependencies:
   http: 1.6.0                 # http support
   xml: 6.6.1                  # xml parsing
   flutter_typeahead: 5.2.0    # text field with suggestions
+  package_info_plus: 9.0.0    # get version, build and app name
 
 dev_dependencies:
   flutter_launcher_icons: 0.14.4 # icons generator, run: "dart run flutter_launcher_icons"
