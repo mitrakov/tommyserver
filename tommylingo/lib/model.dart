@@ -7,8 +7,8 @@ class MyModel extends Model {
   // variables
   static final Random _random = Random(DateTime.now().millisecondsSinceEpoch);
   final List<TokenPair> _data = [];
-  String _langCode = "en-GB";
-  int _currentToken = 0;
+  var _langCode = "en-GB";
+  var _currentToken = 0;
 
   // getters
   String get langCode => _langCode;
@@ -32,8 +32,16 @@ class MyModel extends Model {
   // methods
   /// sets internal counter to next token; all changes will be propagated by ScopedModel
   void nextToken() {
-    _currentToken++;
+    _currentToken = (_currentToken + 1) % _data.length;
     notifyListeners();
+  }
+
+  /// sets internal counter to previous token; all changes will be propagated by ScopedModel
+  void prevToken() {
+    if (_currentToken > 0) {
+      _currentToken--;
+      notifyListeners();
+    }
   }
 
   String getValue(String key) {
@@ -81,6 +89,5 @@ class MyModel extends Model {
 class TokenPair {
   final String key;
   final String translation;
-
   TokenPair(this.key, this.translation);
 }
