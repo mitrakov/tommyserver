@@ -80,7 +80,8 @@ class MyModel extends Model {
       return XmlDocument
         .parse(response.body)
         .findAllElements("item")
-        .map((e) => TokenPair(e.getAttribute("key")!, e.text));
+        .map((e) => TokenPair(e.getAttribute("key")!, e.text, bool.tryParse(e.getAttribute("hide") ?? "") ?? false))
+        .where((t) => !t.isDeleted);
     }
     else return Future.error("Error: ${response.statusCode}; ${response.body}");
   }
@@ -89,5 +90,6 @@ class MyModel extends Model {
 class TokenPair {
   final String key;
   final String translation;
-  TokenPair(this.key, this.translation);
+  final bool isDeleted;
+  TokenPair(this.key, this.translation, [this.isDeleted = false]);
 }
