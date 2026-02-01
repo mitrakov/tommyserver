@@ -9,35 +9,32 @@ import org.http4s.scalaxml.{xmlDecoder, xmlEncoder}
 
 /// curl -H "Authorization: bearer XXX" http://mitrakoff.com:9090/lingo/all/en-GB
 /// curl -H "Authorization: bearer XXX" http://mitrakoff.com:9090/lingo/key/en-GB/flexible
+/// curl -H "Authorization: bearer XXX" http://mitrakoff.com:9090/lingo -X DELETE \
+///            -d '<a><langCode>en-GB</langCode><key>flexible</key></a>'
 class LingoRoutes[F[_]: Async](service: LingoService[F]) extends Http4sDsl[F]:
-  given EntityDecoder[F, DictKey] = xmlDecoder map { elem =>
-    val langCode = (elem \ "langCode").text.trim
-    val key = (elem \ "key").text.trim
-    DictKey(1, langCode, key)
-  }
+  given edKey : EntityDecoder[F, Option[DictKey]] = xmlDecoder.map { elem =>
+    Some(DictKey(1, (elem \ "langCode").text.trim, (elem \ "key").text.trim))
+  }.handleError(_ => None)
 
-  given EntityDecoder[F, Dict] = xmlDecoder map { elem =>
+  given edDict : EntityDecoder[F, Option[Dict]] = xmlDecoder.map { elem =>
     // note: do NOT reuse other decoders! "xmlDecoder.map" may be called only once!
-    val langCode = (elem \ "langCode").text.trim
-    val key = (elem \ "key").text.trim
-    val translation = (elem \ "translation").text.trim
-    Dict(DictKey(1, langCode, key), translation)
-  }
+    Some(Dict(DictKey(1, (elem \ "langCode").text.trim, (elem \ "key").text.trim), (elem \ "translation").text.trim))
+  }.handleError(_ => None)
 
   @deprecated
   given keysEncoder: EntityEncoder[F, List[String]] =
     xmlEncoder contramap { list => <keys>{list map(s => {<key>{s}</key>})}</keys> }
 
-  given translationsEncoderList: EntityEncoder[F, List[(String, String, Option[String])]] =
+  given translationsEncoderList: EntityEncoder[F, List[(String, String, Boolean)]] =
     xmlEncoder contramap { list => <result>{list map {
-      case (k, v, Some(c)) => <item key={k} conjugation={c}>{v}</item>
-      case (k, v, None)    => <item key={k}>{v}</item>
+      case (k, v, true)  => <item key={k} hide={"true"}>{v}</item>
+      case (k, v, false) => <item key={k}>{v}</item>
     }}</result> }
 
-  given translationsEncoder: EntityEncoder[F, (String, String, Option[String])] =
+  given translationsEncoder: EntityEncoder[F, (String, String, Boolean)] =
     xmlEncoder contramap {
-      case (k, v, Some(c)) => <item key={k} conjugation={c}>{v}</item>
-      case (k, v, None)    => <item key={k}>{v}</item>
+      case (k, v, true)  => <item key={k} hide={"true"}>{v}</item>
+      case (k, v, false) => <item key={k}>{v}</item>
     }
 
   val routes: HttpRoutes[F] = HttpRoutes.of {
@@ -49,7 +46,18 @@ class LingoRoutes[F[_]: Async](service: LingoService[F]) extends Http4sDsl[F]:
         case None => Response.notFound.pure[F]
       }
     case req @ POST -> Root / "lingo" =>
-      req.as[Dict] flatMap (service.upsert(_) *> Ok(<result>ok</result>))
+      req.as[Option[Dict]] flatMap {
+        case Some(d) => service.upsert(d) *> Ok(<result>ok</result>)
+        case None    => BadRequest(<result>parse error</result>)
+      }
     case req @ DELETE -> Root / "lingo" =>
-      req.as[DictKey] flatMap (service.remove(_) *> Ok(<result>ok</result>))
+      req.as[Option[DictKey]] flatMap {
+        case Some(k) => service.softDelete(k) *> Ok(<result>ok</result>)
+        case None    => BadRequest(<result>parse error</result>)
+      }
+    case req @ DELETE -> Root / "lingo" / "hard" =>
+      req.as[Option[DictKey]] flatMap {
+        case Some(k) => service.remove(k) *> Ok(<result>ok</result>)
+        case None    => BadRequest(<result>parse error</result>)
+      }
   }
