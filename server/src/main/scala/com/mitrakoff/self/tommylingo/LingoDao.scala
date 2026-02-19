@@ -20,6 +20,9 @@ Conjugations: https://raw.githubusercontent.com/asosab/esp_verbos/master/esp_ver
 */
 
 class LingoDao[F[_]](db: Db[F]):
+  def fetchAllCodes(userId: Int): F[List[String]] =
+    db.run(sql"""SELECT DISTINCT lang_code FROM lingo.dict WHERE user_id = $userId""".query[String].to[List])
+
   def fetch(userId: Int, langCode: String, key: String): F[Option[(String, String, Boolean)]] =
     db.run(sql"""SELECT key, translation, is_deleted FROM lingo.dict WHERE user_id = $userId AND lang_code = $langCode AND key = $key"""
       .query[(String, String, Boolean)].option)
