@@ -2,7 +2,7 @@
 
 Simple application to learn languages.
 
-Available for iOS and Android.
+Available for iOS, MacOS and Android.
 
 Supported languages:
 - en-GB
