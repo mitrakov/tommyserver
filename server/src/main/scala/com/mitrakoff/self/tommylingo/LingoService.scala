@@ -1,6 +1,8 @@
 package com.mitrakoff.self.tommylingo
 
 class LingoService[F[_]](dao: LingoDao[F]):
+  def getAllCodes(userId: Int): F[List[String]] = dao.fetchAllCodes(userId)
+
   def getByKey(userId: Int, langCode: String, key: String): F[Option[(String, String, Boolean)]] = dao.fetch(userId, langCode, key)
 
   def getAll(userId: Int, langCode: String): F[List[(String, String, Boolean)]] = dao.fetch(userId, langCode)

@@ -38,6 +38,8 @@ class LingoRoutes[F[_]: Async](service: LingoService[F]) extends Http4sDsl[F]:
     }
 
   val routes: HttpRoutes[F] = HttpRoutes.of {
+    case GET -> Root / "lingo" / "all" =>
+      Ok(service.getAllCodes(1))
     case GET -> Root / "lingo" / "all" / langCode =>
       Ok(service.getAll(1, langCode))
     case GET -> Root / "lingo" / "key" / langCode / key =>
