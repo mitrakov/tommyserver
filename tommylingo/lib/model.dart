@@ -6,11 +6,13 @@ import 'package:xml/xml.dart';
 class MyModel extends Model {
   // variables
   static final Random _random = Random(DateTime.now().millisecondsSinceEpoch);
+  final List<String> _allCodes = [];
   final List<TokenPair> _data = [];
-  var _langCode = "en-GB";
+  var _langCode = "";
   var _currentToken = 0;
 
   // getters
+  Future<Iterable<String>> get allCodes async => _allCodes.isEmpty ? (_allCodes..addAll(await _loadAllLangCodes())) : _allCodes;
   String get langCode => _langCode;
   Iterable<String> get keys => _data.map((e) => e.key);
   Future<TokenPair> get token async {
@@ -32,8 +34,10 @@ class MyModel extends Model {
   // methods
   /// sets internal counter to next token; all changes will be propagated by ScopedModel
   void nextToken() {
-    _currentToken = (_currentToken + 1) % _data.length;
-    notifyListeners();
+    if (_data.isNotEmpty) {
+      _currentToken = (_currentToken + 1) % _data.length;
+      notifyListeners();
+    }
   }
 
   /// sets internal counter to previous token; all changes will be propagated by ScopedModel
@@ -73,7 +77,7 @@ class MyModel extends Model {
     else return "Error: ${response.statusCode}; ${response.body}";
   }
 
-  /// loads all keys, translations and optional conjugations from server
+  /// loads all language codes
   Future<Iterable<TokenPair>> _loadAll() async {
     final response = await http.get(Uri.parse("http://mitrakoff.com:9090/lingo/all/$langCode"));
     if (response.statusCode == 200) {
@@ -84,6 +88,14 @@ class MyModel extends Model {
         .where((t) => !t.isDeleted);
     }
     else return Future.error("Error: ${response.statusCode}; ${response.body}");
+  }
+
+  /// loads all keys and translations from server
+  Future<Iterable<String>> _loadAllLangCodes() async {
+    final response = await http.get(Uri.parse("http://mitrakoff.com:9090/lingo/all"));
+    if (response.statusCode == 200)
+      return XmlDocument.parse(response.body).findAllElements("key").map((e) => e.text);
+    return Future.error("Error: ${response.statusCode}; ${response.body}");
   }
 }
 
