@@ -19,12 +19,12 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
+  Widget build(BuildContext context) =>
+    MaterialApp(
       title: "Tommylingo",
-      home: ScopedModelDescendant<MyModel>(builder: (context, child, model) {
-        return FutureBuilder(future: model.token, builder: (context, snapshot) {
-          return Scaffold(
+      home: ScopedModelDescendant<MyModel>(builder: (context, child, model) =>
+        FutureBuilder(future: model.token, builder: (context, snapshot) =>
+          Scaffold(
             appBar: AppBar(
               centerTitle: true,
               title: const Text("Tommylingo", style: TextStyle(fontWeight: .bold)),
@@ -77,22 +77,13 @@ class MyApp extends StatelessWidget {
                   ),
                 ),
                 Expanded(
-                  child: ListView(children: [
-                    ListTile(
-                      title: const Text("en-GB"), // https://www.oracle.com/java/technologies/javase/java8locales.html
-                      onTap: () {
-                        model.langCode = "en-GB";
-                        Navigator.pop(context);
-                      },
-                    ),
-                    ListTile(
-                      title: const Text("es-ES"),
-                      onTap: () {
-                        model.langCode = "es-ES";
-                        Navigator.pop(context);
-                      },
-                    ),
-                  ]),
+                  child: FutureBuilder(future: model.allCodes, builder: (context, snp) =>
+                    snp.hasData
+                      ? ListView(children: snp.data!.map((langCode) => ListTile(title: Text(langCode), onTap: () {
+                          model.langCode = langCode;
+                          Navigator.pop(context);
+                        })).toList())
+                      : CircularProgressIndicator()),
                 ),
               ]),
             ),
@@ -135,7 +126,7 @@ class MyApp extends StatelessWidget {
                       Utils.showYesNoDialog(context, "Delete translation", ask, () async {
                         final error = await model.deleteTranslation(snapshot.data!.key);
                         final bar = SnackBar(content: Text(error.isEmpty ? "Deleted!" : error),
-                          duration: const Duration(seconds: 3), backgroundColor: error.isEmpty ? Colors.green : Colors.red
+                          duration: const Duration(milliseconds: 1500), backgroundColor: error.isEmpty ? Colors.green : Colors.red
                         );
                         ScaffoldMessenger.of(context).showSnackBar(bar);
                         if (error.isEmpty) model.nextToken();
@@ -145,9 +136,8 @@ class MyApp extends StatelessWidget {
                 ),
               ],
             ),
-          );
-        });
-      }),
+          ),
+        ),
+      ),
     );
-  }
 }
