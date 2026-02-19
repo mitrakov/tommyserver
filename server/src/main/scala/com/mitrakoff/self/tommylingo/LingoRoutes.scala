@@ -7,6 +7,7 @@ import org.http4s.{EntityDecoder, EntityEncoder, HttpRoutes}
 import org.http4s.dsl.Http4sDsl
 import org.http4s.scalaxml.{xmlDecoder, xmlEncoder}
 
+/// curl -H "Authorization: bearer XXX" http://mitrakoff.com:9090/lingo/all
 /// curl -H "Authorization: bearer XXX" http://mitrakoff.com:9090/lingo/all/en-GB
 /// curl -H "Authorization: bearer XXX" http://mitrakoff.com:9090/lingo/key/en-GB/flexible
 /// curl -H "Authorization: bearer XXX" http://mitrakoff.com:9090/lingo -X DELETE \
