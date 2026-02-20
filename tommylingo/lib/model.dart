@@ -6,7 +6,7 @@ import 'package:xml/xml.dart';
 class MyModel extends Model {
   // variables
   static final Random _random = Random(DateTime.now().millisecondsSinceEpoch);
-  final List<String> _allCodes = [];
+  final Set<String> _allCodes = {};
   final List<TokenPair> _data = [];
   var _langCode = "";
   var _currentToken = 0;
