@@ -22,7 +22,7 @@ class NewKey extends StatelessWidget {
       return Scaffold(
         appBar: AppBar(title: Text(token != null
             ? 'Edit "${token!.key}" for ${model.langCode}'
-            : "New translation for ${model.langCode}"
+            : 'New translation for "${model.langCode}"'
         )),
         body: Center(
           child: Column(

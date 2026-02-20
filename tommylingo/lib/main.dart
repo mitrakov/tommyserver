@@ -27,7 +27,8 @@ class MyApp extends StatelessWidget {
           Scaffold(
             appBar: AppBar(
               centerTitle: true,
-              title: const Text("Tommylingo", style: TextStyle(fontWeight: .bold)),
+              title: Text(model.langCode.isEmpty ? "Tommylingo" : "Tommylingo (${model.langCode})",
+                  style: TextStyle(fontWeight: .bold)),
               actions: [
                 IconButton(icon: const Icon(Icons.arrow_back_ios),    onPressed: model.prevToken),
                 IconButton(icon: const Icon(Icons.arrow_forward_ios), onPressed: model.nextToken),
