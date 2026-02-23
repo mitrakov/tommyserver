@@ -12,7 +12,13 @@ class MyModel extends Model {
   var _currentToken = 0;
 
   // getters
-  Future<Iterable<String>> get allCodes async => _allCodes.isEmpty ? (_allCodes..addAll(await _loadAllLangCodes())) : _allCodes;
+  Future<Iterable<String>> get allCodes async {
+    if (_allCodes.isNotEmpty) return _allCodes;
+
+    _allCodes.addAll(await _loadAllLangCodes());
+    _langCode = _allCodes.firstOrNull ?? "";
+    return _allCodes;
+  }
   String get langCode => _langCode;
   Iterable<String> get keys => _data.map((e) => e.key);
   Future<TokenPair> get token async {
