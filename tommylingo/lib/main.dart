@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:tommylingo/model.dart';
@@ -23,7 +24,7 @@ class MyApp extends StatelessWidget {
     MaterialApp(
       title: "Tommylingo",
       home: ScopedModelDescendant<MyModel>(builder: (context, child, model) =>
-        FutureBuilder(future: model.token, builder: (context, snapshot) =>
+        FutureBuilder(future: model.token, builder: (context, snapshot) => // TODO get down Future
           Scaffold(
             appBar: AppBar(
               centerTitle: true,
@@ -39,34 +40,47 @@ class MyApp extends StatelessWidget {
                 }),
               ],
             ),
-            body: snapshot.hasData
-              ? GestureDetector(
-                  onTap: () {
-                    if (snapshot.data!.key.isNotEmpty)
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                        content: Text(snapshot.data!.key),
-                        duration: const Duration(milliseconds: 1300),
-                        behavior: SnackBarBehavior.floating,
-                        margin: const .only(top: 1),
-                      ));
-                    model.nextToken();
-                  },
-                  child: Container(
-                    alignment: .center,
-                    decoration: BoxDecoration(), // to detect gestures outside the Text
-                    child: Column(
-                      children: [
-                        SizedBox(height: 160),
-                        Text(
-                          snapshot.data!.translation.isNotEmpty ? snapshot.data!.translation : "Press ☰ and choose language...",
-                          textAlign: .center,
-                          style: TextStyle(fontSize: 30),
+            body: Shortcuts(
+              shortcuts: {
+                SingleActivator(LogicalKeyboardKey.keyA): AddIntent(),
+              },
+              child: Actions(
+                actions: {
+                  AddIntent: CallbackAction(onInvoke: (_) => Navigator.push(context, MaterialPageRoute(builder: (_) => NewKey())))
+                },
+                child: Focus(
+                  autofocus: true,
+                  child: snapshot.hasData
+                    ? GestureDetector(
+                        onTap: () {
+                          if (snapshot.data!.key.isNotEmpty)
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content: Text(snapshot.data!.key),
+                              duration: const Duration(milliseconds: 1300),
+                              behavior: SnackBarBehavior.floating,
+                              margin: const .only(top: 1),
+                            ));
+                          model.nextToken();
+                        },
+                        child: Container(
+                          alignment: .center,
+                          decoration: BoxDecoration(), // to detect gestures outside the Text
+                          child: Column(
+                            children: [
+                              SizedBox(height: 160),
+                              Text(
+                                snapshot.data!.translation.isNotEmpty ? snapshot.data!.translation : "Press ☰ and choose language...",
+                                textAlign: .center,
+                                style: TextStyle(fontSize: 30),
+                              ),
+                            ],
+                          ),
                         ),
-                      ],
-                    ),
-                  ),
-                )
-              : const Center(child: RefreshProgressIndicator()),
+                      )
+                    : const Center(child: RefreshProgressIndicator()),
+                ),
+              ),
+            ),
             drawer: Drawer(
               child: Column(children: [
                 SizedBox(
@@ -142,3 +156,5 @@ class MyApp extends StatelessWidget {
       ),
     );
 }
+
+class AddIntent extends Intent {}
