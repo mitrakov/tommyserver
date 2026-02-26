@@ -13,7 +13,7 @@ import java.time.temporal.ChronoUnit.DAYS
 type Id = Long
 
 class AuthService[F[_]: MonadThrow](dao: AuthDao[F]):
-  private val secretKey = sys.env.getOrElse("SECRET_KEY", "123")
+  private val secretKey = sys.env.getOrElse("SECRET_KEY", "555")
   private val jwtAlgorithm = JwtAlgorithm.HS512
 
   def auth(login: String, secret: String): F[Either[String, String]] =
@@ -28,8 +28,7 @@ class AuthService[F[_]: MonadThrow](dao: AuthDao[F]):
     }
 
   def isTokenValid(token: String): Either[String, Id] =
-    // TODO WTF, bro? replace with https://pastebin.com/zUjAgTdw
-    Either.cond(token == "555", 1, "Invalid token")
+    Either.cond(token == secretKey, 1, "Invalid token")
 
   private val authenticate: JwtToken => JwtClaim => F[Option[Id]] =
     import cats.implicits.catsSyntaxApplicativeId
