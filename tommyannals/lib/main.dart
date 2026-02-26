@@ -14,13 +14,13 @@ Build for iOS:
   flutter build ios
   xCode: Product -> Destination -> Any iOS Device (arm64)
   xCode: Product -> Archive -> Distribute App -> Release Testing
-  rename and move *.ipa file to _dist
+  rename and move *.ipa file to dist/
 
 Build for Android:
   bump version in pubspec.yaml
   flutter build apk
-  AndroidStudio: Build -> Generate Signed Bundle -> APK -> choose android.jks -> release
-  rename and move *.apk file to _dist
+  AndroidStudio: Build -> Generate Signed Bundle -> APK -> choose android/keystore.jks -> release
+  rename and move *.apk file to dist/
  */
 void main() {
   initializeDateFormatting(); // to load locales for TableCalendar
