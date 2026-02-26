@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:scoped_model/scoped_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:tommyannals/model.dart';
 import 'package:tommyannals/tommylogger.dart';
+import 'package:tommyannals/inputbox.dart';
 import 'package:tommyannals/widgets/events4date.dart';
 import 'package:tommyannals/widgets/new_event.dart';
 
@@ -23,6 +25,7 @@ Build for Android:
   rename and move *.apk file to dist/
  */
 void main() {
+  WidgetsFlutterBinding.ensureInitialized(); // rm error: Binding has not yet been initialized.
   initializeDateFormatting(); // to load locales for TableCalendar
   runApp(ScopedModel(model: MyModel()..schema, child: MaterialApp(
     title: "Tommy Annals",
@@ -46,22 +49,22 @@ class _MyAppState extends State<MyApp> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Tommy Annals"),
+        centerTitle: true,
         actions: [
-          IconButton(
-            icon: const Icon(Icons.info_outlined),
-            onPressed: () => _showVersion(),
-          ),
+          IconButton(icon: const Icon(Icons.info_outlined), onPressed: _showVersion),
+          IconButton(icon: const Icon(Icons.key_outlined),  onPressed: _setPassword),
         ],
       ),
       body: Column(
         children: [
+          // https://github.com/aleksanderwozniak/table_calendar/blob/master/example/lib/pages/basics_example.dart
           TableCalendar(
             startingDayOfWeek: StartingDayOfWeek.monday, // Sunday by default
             locale: "es_ES", // make sure to call initializeDateFormatting() from import 'package:intl/date_symbol_data_local.dart';
             firstDay: DateTime.utc(2000),
             lastDay: DateTime.utc(2040),
             focusedDay: _focusedDate,
-            selectedDayPredicate: (day) => isSameDay(_selectedDate, day), // https://github.com/aleksanderwozniak/table_calendar/blob/master/example/lib/pages/basics_example.dart
+            selectedDayPredicate: (day) => isSameDay(_selectedDate, day),
             onPageChanged: (focusedDay) { _focusedDate = focusedDay; },   // no need to "setState()" here
             onDaySelected: (selectedDate, focusedDate) {
               if (!isSameDay(_selectedDate, selectedDate)) {
@@ -76,7 +79,7 @@ class _MyAppState extends State<MyApp> {
           Expanded(child: EventsForDateViewer(_focusedDate)),
         ],
       ),
-      floatingActionButton: Builder( // to avoid error: "Navigator operation requested with a context that does not include a Navigator."
+      floatingActionButton: Builder( // to fix error "Navigator operation requested with a context that does not include a Navigator"
         builder: (context) {
           return FloatingActionButton(
             tooltip: "Crear nuevo evento",
@@ -90,6 +93,12 @@ class _MyAppState extends State<MyApp> {
 
   void _showVersion() async {
     final PackageInfo? _info = await PackageInfo.fromPlatform();
-    TommyLogger.logger.info("${_info!.appName} v${_info.version} build ${_info.buildNumber}", 2000);
+    TommyLogger.logger.info("${_info!.appName} v${_info.version} compilación ${_info.buildNumber}", 2000);
+  }
+
+  void _setPassword() async {
+    final pass = await showInputBox(context, "Introduzca contraseña", hint: "Contraseña", obscure: true);
+    if (pass != null)
+      (await SharedPreferences.getInstance()).setString("_PASS", pass);
   }
 }

@@ -1,7 +1,7 @@
-// ignore_for_file: curly_braces_in_flow_control_structures
 import 'dart:convert';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tommyannals/chronicle/chronicle.dart';
 import 'package:tommyannals/chronicle/schema.dart';
 
@@ -36,8 +36,9 @@ class MyModel extends Model {
   Future<String> _addForDate(DateTime key, Chronicle item) async {
     final body = json.encode(item.toJson());
     print("POST http://mitrakoff.com:9090/annals: $body");
+    final pass = (await SharedPreferences.getInstance()).getString("_PASS");
     final response =
-        await http.post(Uri.parse("http://mitrakoff.com:9090/annals"), headers: {"Authorization": "bearer 555"}, body: body);
+        await http.post(Uri.parse("http://mitrakoff.com:9090/annals"), headers: {"Authorization": "bearer $pass"}, body: body);
     print("> ${response.body}");
     if (response.statusCode == 200) {
       _date2data.remove(key);
@@ -48,7 +49,8 @@ class MyModel extends Model {
 
   Future<String> _removeItem(DateTime key, int id) async {
     print("DELETE http://mitrakoff.com:9090/annals/$id");
-    final response = await http.delete(Uri.parse("http://mitrakoff.com:9090/annals/$id"), headers: {"Authorization": "bearer 555"});
+    final pass = (await SharedPreferences.getInstance()).getString("_PASS");
+    final response = await http.delete(Uri.parse("http://mitrakoff.com:9090/annals/$id"), headers: {"Authorization": "bearer $pass"});
     print("> ${response.body}");
     if (response.statusCode == 200) {
       _date2data.remove(key);
@@ -60,8 +62,9 @@ class MyModel extends Model {
   Future<List<Chronicle>> _loadForDate(DateTime date) async {
     final formatted = _extractDate(date);
     print("GET http://mitrakoff.com:9090/annals/$formatted");
+    final pass = (await SharedPreferences.getInstance()).getString("_PASS");
     final response =
-        await http.get(Uri.parse("http://mitrakoff.com:9090/annals/$formatted"), headers: {"Authorization": "bearer 555"});
+        await http.get(Uri.parse("http://mitrakoff.com:9090/annals/$formatted"), headers: {"Authorization": "bearer $pass"});
     print("> ${response.body}");
     if (response.statusCode == 200) {
       final list = json.decode(response.body) as List<dynamic>;
@@ -72,7 +75,8 @@ class MyModel extends Model {
 
   Future<List<Schema>> _loadSchema() async {
     print("GET http://mitrakoff.com:9090/annals/schema");
-    final response = await http.get(Uri.parse("http://mitrakoff.com:9090/annals/schema"), headers: {"Authorization": "bearer 555"});
+    final pass = (await SharedPreferences.getInstance()).getString("_PASS");
+    final response = await http.get(Uri.parse("http://mitrakoff.com:9090/annals/schema"), headers: {"Authorization": "bearer $pass"});
     print("> ${response.body}");
     if (response.statusCode == 200) {
       final List<dynamic> schemaList = json.decode(response.body);
