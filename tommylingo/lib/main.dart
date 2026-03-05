@@ -11,8 +11,9 @@ Build for iOS:
   bump version in pubspec.yaml
   flutter build ios
   xCode: Product -> Destination -> Any iOS Device (arm64)
-  xCode: Product -> Archive -> Distribute App -> Release Testing
+  xCode: Product -> Archive -> Distribute App -> Custom -> Release Testing -> include manifest for installation
   rename and move *.ipa file to dist/
+  upload *.ipa, and manifest.plist to your https-server for further distribution
 
 Build for Android:
   bump version in pubspec.yaml
@@ -26,7 +27,7 @@ Build for MacOS:
   xCode: Product -> Destination -> Any Mac (arm64, x86_64)
   xCode: Product -> Archive -> Distribute App -> Direct Distribution -> wait for 30-40 sec for notarization service to complete
   copy "*.app" to "installer/macos/App"
-  run _installer/macos/build-dmg.sh
+  run installer/macos/build-dmg.sh
   move *.dmg image to dist/
  */
 void main() async {
@@ -39,12 +40,11 @@ class MyApp extends StatelessWidget {
     MaterialApp(
       title: "Tommylingo",
       home: ScopedModelDescendant<MyModel>(builder: (context, child, model) =>
-        FutureBuilder(future: model.token, builder: (context, snapshot) => // TODO get down Future
+        FutureBuilder(future: model.token, builder: (context, snapshot) =>
           Scaffold(
             appBar: AppBar(
               centerTitle: true,
-              title: Text(model.langCode.isEmpty ? "Tommylingo" : "Tommylingo (${model.langCode})",
-                  style: TextStyle(fontWeight: .bold)),
+              title: Text(model.langCode.isEmpty ? "Tommylingo" : model.langCode, style: TextStyle(fontWeight: .bold)),
               actions: [
                 IconButton(icon: const Icon(Icons.arrow_back_ios),    onPressed: model.prevToken),
                 IconButton(icon: const Icon(Icons.arrow_forward_ios), onPressed: model.nextToken),
