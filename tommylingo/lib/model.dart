@@ -72,13 +72,13 @@ class MyModel extends Model {
   }
 
   /// returns empty string if OK, or error message in case of failure
-  Future<String> deleteTranslation(String key) async {
+  Future<String> deleteTranslation(String key, [bool hard = false]) async {
     final xml = XmlDocument([XmlElement(XmlName("a"), [], [
       XmlElement(XmlName("langCode"), [], [XmlText(_langCode)]),
       XmlElement(XmlName("key"), [], [XmlText(key)]),
     ])]);
 
-    final response = await http.delete(Uri.parse("http://mitrakoff.com:9090/lingo"), body: xml.toXmlString());
+    final response = await http.delete(Uri.parse("http://mitrakoff.com:9090/lingo${hard ? '/hard' : ''}"), body: xml.toXmlString());
     if (response.statusCode == 200) return "";
     else return "Error: ${response.statusCode}; ${response.body}";
   }

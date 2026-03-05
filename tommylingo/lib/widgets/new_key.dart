@@ -75,16 +75,23 @@ class NewKey extends StatelessWidget {
   }
 
   void _ok(MyModel model, BuildContext context) async {
-    final key = keyController.text;
-    final translation = translationController.text;
-    if (key.isNotEmpty) {
+    final key = keyController.text.trim();
+    final translation = translationController.text.trim();
+    if (key.isNotEmpty) {                             // translation might be NULL to be filled up later
+      if (token != null && key != token!.key) {       // key is updated => hard-delete pair, then insert a new one
+        final error = await model.deleteTranslation(token!.key, true);
+        if (error.isNotEmpty)
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(error), duration: const Duration(seconds: 2), backgroundColor: Colors.red)
+          );
+      }
+
       final error = await model.upsertTranslation(key, translation);
-      final bar = SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text(error.isEmpty ? "Success!" : error),
-        duration: const Duration(seconds: 3),
+        duration: const Duration(seconds: 2),
         backgroundColor: error.isEmpty ? Colors.green : Colors.red,
-      );
-      ScaffoldMessenger.of(context).showSnackBar(bar);
+      ));
       if (error.isEmpty)
         Navigator.pop(context);
     }
