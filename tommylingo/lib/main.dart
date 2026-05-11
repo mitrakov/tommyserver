@@ -57,7 +57,7 @@ class MyApp extends StatelessWidget {
             ),
             body: Shortcuts(
               shortcuts: {
-                SingleActivator(LogicalKeyboardKey.keyA): AddIntent(),
+                SingleActivator(LogicalKeyboardKey.keyF): AddIntent(),
               },
               child: Actions(
                 actions: {
