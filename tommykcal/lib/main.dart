@@ -49,7 +49,7 @@ class _MyAppState extends State<MyApp> {
     TommyLogger.logger.init(context);
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Tommy Annals"),
+        title: const Text("Tommy Kcal"),
         centerTitle: true,
         actions: [
           IconButton(icon: const Icon(Icons.info_outlined), onPressed: _showVersion),
@@ -76,7 +76,6 @@ class _MyAppState extends State<MyApp> {
               }
             },
           ),
-          const Text("Eventos", textScaler: TextScaler.linear(1.4)),
           Expanded(child: MealForDateViewer(_focusedDate)),
         ],
       ),
