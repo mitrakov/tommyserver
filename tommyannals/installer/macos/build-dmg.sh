@@ -13,13 +13,13 @@ if [ "$#" -ne 1 ]; then
 fi
 
 create-dmg \
-  --volname "Tommylingo Installer" \
+  --volname "Tommy Annals Installer" \
   --volicon "appicon.png" \
   --background "background.jpg" \
   --window-size 600 425 \
   --text-size 16 \
   --icon-size 100 \
-  --icon "Tommylingo.app" 185 165 \
+  --icon "TommyAnnals.app" 185 165 \
   --app-drop-link 405 165 \
-  "tommylingo-macos-$1.dmg" \
+  "tommyannals-macos-$1.dmg" \
   "App/"

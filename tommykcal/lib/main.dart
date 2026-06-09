@@ -24,6 +24,15 @@ Build for Android:
   flutter build apk
   AndroidStudio: Build -> Generate Signed Bundle -> APK -> choose android/keystore.jks -> release
   rename and move *.apk file to dist/
+
+Build for MacOS:
+  bump version in pubspec.yaml
+  flutter build macos
+  xCode: Product -> Destination -> Any Mac (arm64, x86_64)
+  xCode: Product -> Archive -> Distribute App -> Direct Distribution -> wait for 30-40 sec for notarization service to complete
+  copy "*.app" to "installer/macos/App"
+  run installer/macos/build-dmg.sh
+  move *.dmg image to dist/
  */
 void main() {
   WidgetsFlutterBinding.ensureInitialized(); // rm error: Binding has not yet been initialized.
