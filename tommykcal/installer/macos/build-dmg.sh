@@ -19,7 +19,7 @@ create-dmg \
   --window-size 600 425 \
   --text-size 16 \
   --icon-size 100 \
-  --icon "TommyKcal.app" 185 165 \
+  --icon "Tommy Kcal.app" 185 165 \
   --app-drop-link 405 165 \
   "tommykcal-macos-$1.dmg" \
   "App/"
