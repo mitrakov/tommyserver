@@ -45,7 +45,7 @@ class KcalRoutes[F[_]: Concurrent](authService: AuthService[F], kcalService: Kca
             response <- Ok(chronicle)
           } yield response
 
-      // curl -H "Authorization: bearer XXX" http://mitrakoff.com:9090/kcal -d '{"date":"2025-09-20", "productId":5, "weight":250}'
+      // curl -H "Authorization: bearer XXX" http://mitrakoff.com:9090/kcal -d '{"date":"2026-06-09", "productId":1, "weight":250}'
       case req@POST -> Root / `kcal` as userId =>
         given EntityDecoder[F, AddMeal] = jsonOf
         for {

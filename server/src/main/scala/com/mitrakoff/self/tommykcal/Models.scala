@@ -1,8 +1,8 @@
 package com.mitrakoff.self.tommykcal
 
 import com.mitrakoff.self.auth.Id
-import io.circe.{Codec, Decoder, Encoder}
-import io.circe.generic.semiauto.{deriveCodec, deriveDecoder, deriveEncoder}
+import io.circe.generic.semiauto.{deriveDecoder, deriveEncoder}
+import io.circe.{Decoder, Encoder}
 import java.time.LocalDate
 
 // === Meal ===
