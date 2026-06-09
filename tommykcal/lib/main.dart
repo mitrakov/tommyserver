@@ -7,8 +7,8 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:tommykcal/inputbox.dart';
 import 'package:tommykcal/model.dart';
 import 'package:tommykcal/tommylogger.dart';
-import 'package:tommykcal/widgets/events4date.dart';
-import 'package:tommykcal/widgets/new_event.dart';
+import 'package:tommykcal/widgets/meal4date.dart';
+import 'package:tommykcal/widgets/newmeal.dart';
 
 /*
 Build for iOS:
@@ -77,7 +77,7 @@ class _MyAppState extends State<MyApp> {
             },
           ),
           const Text("Eventos", textScaler: TextScaler.linear(1.4)),
-          Expanded(child: EventsForDateViewer(_focusedDate)),
+          Expanded(child: MealForDateViewer(_focusedDate)),
         ],
       ),
       floatingActionButton: Builder( // to fix error "Navigator operation requested with a context that does not include a Navigator"
@@ -85,7 +85,7 @@ class _MyAppState extends State<MyApp> {
           return FloatingActionButton(
             tooltip: "Crear nuevo evento",
             child: const Icon(Icons.add, size: 40),
-            onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => NewEventWidget(_focusedDate))),
+            onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => NewMealWidget(_focusedDate))),
           );
         },
       ),
