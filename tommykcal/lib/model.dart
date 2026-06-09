@@ -4,10 +4,11 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tommykcal/json/addmeal.dart';
 import 'package:tommykcal/json/meal.dart';
+import 'package:tommykcal/json/product.dart';
 
 class ElModelo extends Model {
   final Map<DateTime, List<Meal>> _date2data = {};
-  final List<AddMeal> _schema = [];
+  final List<Product> _products = [];
 
   Future<List<Meal>> getForDate(DateTime date) async {
     final data = _date2data[date];
@@ -19,26 +20,26 @@ class ElModelo extends Model {
     return data;
   }
 
-  Future<List<AddMeal>> get schema async {
-    if (_schema.isEmpty) {
-      final schema = await _loadSchema();
-      _schema..clear()..addAll(schema);
+  Future<List<Product>> get products async {
+    if (_products.isEmpty) {
+      final products = await _loadProducts();
+      _products..clear()..addAll(products);
     }
-    return _schema;
+    return _products;
   }
 
-  Future<String> addForDate(DateTime date, String eventName, Map<String, dynamic> params, String? comment) {
-    return _addForDate(date, Meal(1, _extractDate(date), eventName, 5, comment));
+  Future<String> addForDate(DateTime date, int productId, int weight, String? comment) {
+    return _addForDate(date, AddMeal(_extractDate(date), productId, weight, comment));
   }
 
   Future<String> removeByChronicleId(DateTime date, int chronicleId) => _removeItem(date, chronicleId);
 
-  Future<String> _addForDate(DateTime key, Meal item) async {
+  Future<String> _addForDate(DateTime key, AddMeal item) async {
     final body = json.encode(item.toJson());
-    print("POST http://mitrakoff.com:9090/annals: $body");
+    print("POST http://mitrakoff.com:9090/kcal: $body");
     final pass = (await SharedPreferences.getInstance()).getString("_PASS");
     final response =
-        await http.post(Uri.parse("http://mitrakoff.com:9090/annals"), headers: {"Authorization": "bearer $pass"}, body: body);
+        await http.post(Uri.parse("http://mitrakoff.com:9090/kcal"), headers: {"Authorization": "bearer $pass"}, body: body);
     print("> ${response.body}");
     if (response.statusCode == 200) {
       _date2data.remove(key);
@@ -48,9 +49,9 @@ class ElModelo extends Model {
   }
 
   Future<String> _removeItem(DateTime key, int id) async {
-    print("DELETE http://mitrakoff.com:9090/annals/$id");
+    print("DELETE http://mitrakoff.com:9090/kcal/$id");
     final pass = (await SharedPreferences.getInstance()).getString("_PASS");
-    final response = await http.delete(Uri.parse("http://mitrakoff.com:9090/annals/$id"), headers: {"Authorization": "bearer $pass"});
+    final response = await http.delete(Uri.parse("http://mitrakoff.com:9090/kcal/$id"), headers: {"Authorization": "bearer $pass"});
     print("> ${response.body}");
     if (response.statusCode == 200) {
       _date2data.remove(key);
@@ -61,10 +62,10 @@ class ElModelo extends Model {
 
   Future<List<Meal>> _loadForDate(DateTime date) async {
     final formatted = _extractDate(date);
-    print("GET http://mitrakoff.com:9090/annals/$formatted");
+    print("GET http://mitrakoff.com:9090/kcal/$formatted");
     final pass = (await SharedPreferences.getInstance()).getString("_PASS");
     final response =
-        await http.get(Uri.parse("http://mitrakoff.com:9090/annals/$formatted"), headers: {"Authorization": "bearer $pass"});
+        await http.get(Uri.parse("http://mitrakoff.com:9090/kcal/$formatted"), headers: {"Authorization": "bearer $pass"});
     print("> ${response.body}");
     if (response.statusCode == 200) {
       final list = json.decode(response.body) as List<dynamic>;
@@ -73,15 +74,14 @@ class ElModelo extends Model {
     } else return Future.error("Error: ${response.statusCode}; ${response.body}");
   }
 
-  Future<List<AddMeal>> _loadSchema() async {
-    print("GET http://mitrakoff.com:9090/annals/schema");
-    //final pass = (await SharedPreferences.getInstance()).getString("_PASS");
-    final pass = "555";
-    final response = await http.get(Uri.parse("http://mitrakoff.com:9090/annals/schema"), headers: {"Authorization": "bearer $pass"});
+  Future<List<Product>> _loadProducts() async {
+    print("GET http://mitrakoff.com:9090/kcal/products");
+    final pass = (await SharedPreferences.getInstance()).getString("_PASS");
+    final response = await http.get(Uri.parse("http://mitrakoff.com:9090/kcal/products"), headers: {"Authorization": "bearer $pass"});
     print("> ${response.body}");
     if (response.statusCode == 200) {
-      final List<dynamic> schemaList = json.decode(response.body);
-      return schemaList.map((js) => AddMeal.fromJson(js)).toList();
+      final List<dynamic> productList = json.decode(response.body);
+      return productList.map((js) => Product.fromJson(js)).toList();
     } else return Future.error("Error: ${response.statusCode}; ${response.body}");
   }
 

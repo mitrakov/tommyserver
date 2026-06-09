@@ -24,14 +24,14 @@ class _NewEventWidgetState extends State<NewEventWidget> {
     return ScopedModelDescendant<ElModelo>(builder: (context, child, model) {
       return Scaffold(
         appBar: AppBar(title: const Text("Tommy Annals")),
-        body: FutureBuilder(future: model.schema, builder: (context, snapshot) {
+        body: FutureBuilder(future: model.products, builder: (context, snapshot) {
           if (snapshot.hasError) return Text("ERROR: ${snapshot.error}");
           if (!snapshot.hasData) return const Text("ERROR: No se encontró esquema");
 
-          final eventNames = snapshot.data!.map((e) => e.comment);
+          final eventNames = snapshot.data!.map((e) => e.name);
           final eventName = eventNameCtrl.text;
           final eventDescription =
-            eventName.isNotEmpty ? snapshot.data!.firstWhere((schema) => schema.comment == eventName).comment : null;
+            eventName.isNotEmpty ? snapshot.data!.firstWhere((product) => product.name == eventName).description : null;
           final List<Meal> params = [];
           const decor = InputDecoration(border: OutlineInputBorder(), labelText: "Nombre del evento");
           final List<Widget> children = [
@@ -120,7 +120,7 @@ class _NewEventWidgetState extends State<NewEventWidget> {
 
   void _submit(ElModelo model) {
     if (paramNames2Values.isNotEmpty) {
-      model.addForDate(widget.date, eventNameCtrl.text, paramNames2Values, null);
+      model.addForDate(widget.date, int.tryParse(eventNameCtrl.text) ?? 0, 250, null);
       Navigator.pop(context);
     } else ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Especifique los parámetros")));
   }

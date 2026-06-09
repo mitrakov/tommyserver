@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_alert/flutter_platform_alert.dart';
 import 'package:scoped_model/scoped_model.dart';
@@ -26,7 +27,7 @@ class EventsForDateViewer extends StatelessWidget {
   Widget _createTile(ElModelo model, Meal item) {
     return TrixContainer(child: ListTile(
       title: Text(item.name, textScaler: TextScaler.linear(1.2)),
-      subtitle: Text("json.encode(item.params)", textScaler: TextScaler.linear(0.85)),
+      subtitle: Text("${json.encode(item.kcalTotal)} kcal", textScaler: TextScaler.linear(0.85)),
       onLongPress: () async {
         if (await FlutterPlatformAlert.showAlert(
             windowTitle: "Borrar evento",

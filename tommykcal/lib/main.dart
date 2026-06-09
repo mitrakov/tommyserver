@@ -28,7 +28,7 @@ Build for Android:
 void main() {
   WidgetsFlutterBinding.ensureInitialized(); // rm error: Binding has not yet been initialized.
   initializeDateFormatting(); // to load locales for TableCalendar
-  runApp(ScopedModel(model: ElModelo()..schema, child: MaterialApp(
+  runApp(ScopedModel(model: ElModelo()..products, child: MaterialApp(
     title: "Tommy Kcal",
     theme: ThemeData(primarySwatch: Colors.orange),
     home: MyApp(),
