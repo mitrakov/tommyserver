@@ -14,7 +14,7 @@ CREATE TABLE kcal."user" (
 );
 CREATE TABLE kcal.product (
   product_id serial PRIMARY KEY NOT NULL,
-  "name" varchar(64) NOT NULL,
+  "name" varchar(64) UNIQUE NOT NULL,
   description varchar(255) NULL,
   kcal_per_100 int NOT NULL,
   default_weight_g int NOT NULL DEFAULT 100,
