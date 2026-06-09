@@ -6,7 +6,7 @@ import 'package:table_calendar/table_calendar.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:tommyannals/model.dart';
 import 'package:tommyannals/tommylogger.dart';
-import 'package:tommyannals/inputbox.dart';
+import 'package:tommyannals/widgets/inputbox.dart';
 import 'package:tommyannals/widgets/events4date.dart';
 import 'package:tommyannals/widgets/new_event.dart';
 
