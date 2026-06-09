@@ -5,6 +5,7 @@ import 'package:scoped_model/scoped_model.dart';
 import 'package:tommyannals/chronicle/schema.dart';
 import 'package:tommyannals/model.dart';
 import 'package:tommyannals/widgets/trixcontainer.dart';
+import 'package:tommyannals/tommylogger.dart';
 
 class NewEventWidget extends StatefulWidget {
   final DateTime date;
@@ -129,6 +130,6 @@ class _NewEventWidgetState extends State<NewEventWidget> {
     if (paramNames2Values.isNotEmpty) {
       model.addForDate(widget.date, eventNameCtrl.text, paramNames2Values, null);
       Navigator.pop(context);
-    } else ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Especifique los parámetros")));
+    } else TommyLogger.logger.error("Especifique los parámetros", 1500);
   }
 }

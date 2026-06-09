@@ -4,7 +4,7 @@ import 'package:scoped_model/scoped_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:tommykcal/inputbox.dart';
+import 'package:tommykcal/widgets/inputbox.dart';
 import 'package:tommykcal/model.dart';
 import 'package:tommykcal/tommylogger.dart';
 import 'package:tommykcal/widgets/meal4date.dart';
@@ -30,7 +30,7 @@ void main() {
   initializeDateFormatting(); // to load locales for TableCalendar
   runApp(ScopedModel(model: ElModelo()..products, child: MaterialApp(
     title: "Tommy Kcal",
-    theme: ThemeData(primarySwatch: Colors.orange),
+    theme: ThemeData(primarySwatch: Colors.brown),
     home: MyApp(),
   )));
 }
@@ -60,10 +60,10 @@ class _MyAppState extends State<MyApp> {
         children: [
           // https://github.com/aleksanderwozniak/table_calendar/blob/master/example/lib/pages/basics_example.dart
           TableCalendar(
-            startingDayOfWeek: StartingDayOfWeek.monday, // Sunday by default
+            startingDayOfWeek: StartingDayOfWeek.monday, // switch Sunday -> Monday
             locale: "es_ES", // make sure to call initializeDateFormatting() from import 'package:intl/date_symbol_data_local.dart';
-            firstDay: DateTime.utc(2000),
-            lastDay: DateTime.utc(2040),
+            firstDay: DateTime.utc(2026),
+            lastDay: DateTime.utc(2099),
             focusedDay: _focusedDate,
             selectedDayPredicate: (day) => isSameDay(_selectedDate, day),
             onPageChanged: (focusedDay) { _focusedDate = focusedDay; },   // no need to "setState()" here

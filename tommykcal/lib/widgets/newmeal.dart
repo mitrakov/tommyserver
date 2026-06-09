@@ -4,10 +4,10 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:tommykcal/json/product.dart';
 import 'package:tommykcal/model.dart';
+import 'package:tommykcal/tommylogger.dart';
 
 class NewMealWidget extends StatefulWidget {
   final DateTime date;
-
   const NewMealWidget(this.date);
 
   @override
@@ -21,8 +21,8 @@ class _NewMealWidgetState extends State<NewMealWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return ScopedModelDescendant<ElModelo>(builder: (context, child, model) {
-      return Scaffold(
+    return ScopedModelDescendant<ElModelo>(builder: (context, child, model) =>
+      Scaffold(
         appBar: AppBar(title: const Text("Añadir comida")),
         body: FutureBuilder(future: model.products, builder: (context, snapshot) {
           if (snapshot.hasError) return Text("ERROR: ${snapshot.error}");
@@ -80,8 +80,7 @@ class _NewMealWidgetState extends State<NewMealWidget> {
           child: const Icon(Icons.send_rounded, size: 30),
           onPressed: () => _submit(model),
         ),
-      );
-    });
+      ));
   }
 
   @override
@@ -100,11 +99,7 @@ class _NewMealWidgetState extends State<NewMealWidget> {
       if (id != null) {
         model.addForDate(widget.date, id, weight, comment);
         Navigator.pop(context);
-      } else _showMsg("Producto no existe: ${productCtrl.text}");
-    } else _showMsg("Especifique los parámetros");
-  }
-  
-  void _showMsg(String s) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(s), duration: Duration(milliseconds: 1500)));
+      } else TommyLogger.logger.error("Producto no existe: ${productCtrl.text}", 1500);
+    } else TommyLogger.logger.error("Especifique los parámetros", 1500);
   }
 }

@@ -26,14 +26,14 @@ class EventsForDateViewer extends StatelessWidget {
 
   Widget _createTile(MyModel model, Chronicle item) {
     return TrixContainer(child: ListTile(
-      title: Text(item.eventName, textScaler: TextScaler.linear(1.2)),
-      subtitle: Text(json.encode(item.params), textScaler: TextScaler.linear(0.85)),
+      title: Text(item.eventName, textScaler: .linear(1.2)),
+      subtitle: Text(json.encode(item.params), textScaler: .linear(0.85)),
       onLongPress: () async {
         if (await FlutterPlatformAlert.showAlert(
             windowTitle: "Borrar evento",
             text: "¿Estás seguro que quieres borrar: '${item.eventName}' (${item.date})?",
-            alertStyle: AlertButtonStyle.yesNo,
-            iconStyle: IconStyle.stop) == AlertButton.yesButton) {
+            alertStyle: .yesNo,
+            iconStyle: .stop) == .yesButton) {
           model.removeByChronicleId(date, item.id ?? 0);
         }
       },

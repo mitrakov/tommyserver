@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math' show min;
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_alert/flutter_platform_alert.dart';
@@ -9,7 +10,6 @@ import 'package:tommykcal/widgets/trixcontainer.dart';
 
 class MealForDateViewer extends StatelessWidget {
   final DateTime date;
-
   const MealForDateViewer(this.date);
 
   @override
@@ -30,8 +30,9 @@ class MealForDateViewer extends StatelessWidget {
               spacing: 10,
               children: [
                 Text("En total: $total kcal"),
-                Container(height: 20, width: total * 0.07, decoration: 
-                  BoxDecoration(color: _kcal2colour(total), border: .all(color: Colors.grey))),
+                Container(height: 20, width: min(total, 3600) * 0.07, decoration: 
+                  BoxDecoration(color: _kcal2colour(total), border: .all(color: Colors.grey))
+                ),
               ],
             ),
             Expanded(child: ListView(children: list.map((meal) => _createTile(model, meal)).toList())),
@@ -51,8 +52,8 @@ class MealForDateViewer extends StatelessWidget {
         if (await FlutterPlatformAlert.showAlert(
             windowTitle: "Borrar comida",
             text: "¿Estás seguro que quieres borrar: '${item.name}' (${item.date})?",
-            alertStyle: AlertButtonStyle.yesNo,
-            iconStyle: IconStyle.stop) == AlertButton.yesButton) {
+            alertStyle: .yesNo,
+            iconStyle: .stop) == .yesButton) {
           model.remove(date, item.id);
         }
       },
