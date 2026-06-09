@@ -11,7 +11,8 @@ Build for iOS:
   bump version in pubspec.yaml
   flutter build ios
   xCode: Product -> Destination -> Any iOS Device (arm64)
-  xCode: Product -> Archive -> Distribute App -> Custom -> Release Testing -> include manifest for installation
+  xCode: Product -> Archive -> Distribute App -> Custom -> Release Testing -> include manifest for over-the-air installation
+  specify app URL, e.g. https://ios.tommy.crazedns.ru/yourapp
   rename and move *.ipa file to dist/
   upload *.ipa, and manifest.plist to your https-server for further distribution
 
