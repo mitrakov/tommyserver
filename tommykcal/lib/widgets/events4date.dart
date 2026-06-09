@@ -1,10 +1,9 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_alert/flutter_platform_alert.dart';
 import 'package:scoped_model/scoped_model.dart';
-import 'package:tommyannals/chronicle/chronicle.dart';
-import 'package:tommyannals/model.dart';
-import 'package:tommyannals/widgets/trixcontainer.dart';
+import 'package:tommykcal/json/meal.dart';
+import 'package:tommykcal/model.dart';
+import 'package:tommykcal/widgets/trixcontainer.dart';
 
 class EventsForDateViewer extends StatelessWidget {
   final DateTime date;
@@ -13,7 +12,7 @@ class EventsForDateViewer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ScopedModelDescendant<MyModel>(builder: (context, child, model) {
+    return ScopedModelDescendant<ElModelo>(builder: (context, child, model) {
       return FutureBuilder(future: model.getForDate(date), builder: (context, snapshot) {
         if (snapshot.hasError) return Text("ERROR: ${snapshot.error}");
         if (!snapshot.hasData) return Text("Ningún dato para: $date");
@@ -24,17 +23,17 @@ class EventsForDateViewer extends StatelessWidget {
     });
   }
 
-  Widget _createTile(MyModel model, Chronicle item) {
+  Widget _createTile(ElModelo model, Meal item) {
     return TrixContainer(child: ListTile(
-      title: Text(item.eventName, textScaler: TextScaler.linear(1.2)),
-      subtitle: Text(json.encode(item.params), textScaler: TextScaler.linear(0.85)),
+      title: Text(item.name, textScaler: TextScaler.linear(1.2)),
+      subtitle: Text("json.encode(item.params)", textScaler: TextScaler.linear(0.85)),
       onLongPress: () async {
         if (await FlutterPlatformAlert.showAlert(
             windowTitle: "Borrar evento",
-            text: "¿Estás seguro que quieres borrar: '${item.eventName}' (${item.date})?",
+            text: "¿Estás seguro que quieres borrar: '${item.name}' (${item.date})?",
             alertStyle: AlertButtonStyle.yesNo,
             iconStyle: IconStyle.stop) == AlertButton.yesButton) {
-          model.removeByChronicleId(date, item.id ?? 0);
+          model.removeByChronicleId(date, item.id);
         }
       },
     ));

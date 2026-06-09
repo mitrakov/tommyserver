@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:scoped_model/scoped_model.dart';
-import 'package:tommyannals/chronicle/schema.dart';
-import 'package:tommyannals/model.dart';
-import 'package:tommyannals/widgets/trixcontainer.dart';
+import 'package:tommykcal/json/meal.dart';
+import 'package:tommykcal/model.dart';
+import 'package:tommykcal/widgets/trixcontainer.dart';
 
 class NewEventWidget extends StatefulWidget {
   final DateTime date;
@@ -21,21 +21,20 @@ class _NewEventWidgetState extends State<NewEventWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return ScopedModelDescendant<MyModel>(builder: (context, child, model) {
+    return ScopedModelDescendant<ElModelo>(builder: (context, child, model) {
       return Scaffold(
         appBar: AppBar(title: const Text("Tommy Annals")),
         body: FutureBuilder(future: model.schema, builder: (context, snapshot) {
           if (snapshot.hasError) return Text("ERROR: ${snapshot.error}");
           if (!snapshot.hasData) return const Text("ERROR: No se encontró esquema");
 
-          final eventNames = snapshot.data!.map((e) => e.eventName);
+          final eventNames = snapshot.data!.map((e) => e.comment);
           final eventName = eventNameCtrl.text;
           final eventDescription =
-            eventName.isNotEmpty ? snapshot.data!.firstWhere((schema) => schema.eventName == eventName).eventDescription : null;
-          final List<Param> params =
-            eventName.isNotEmpty ? snapshot.data!.firstWhere((schema) => schema.eventName == eventName).params : [];
+            eventName.isNotEmpty ? snapshot.data!.firstWhere((schema) => schema.comment == eventName).comment : null;
+          final List<Meal> params = [];
           const decor = InputDecoration(border: OutlineInputBorder(), labelText: "Nombre del evento");
-          final children = [
+          final List<Widget> children = [
             const SizedBox(height: 10),
             TypeAheadField<String>(
               controller: eventNameCtrl,
@@ -71,9 +70,9 @@ class _NewEventWidgetState extends State<NewEventWidget> {
     });
   }
 
-  Widget _makeParamWidget(Param p) {
+  Widget _makeParamWidget(Meal p) {
     storeParam(String value) {
-      switch (p.type) {
+      switch (p.name) {
         case "S":
           paramNames2Values[p.name] = value.trim();
           break;
@@ -97,19 +96,19 @@ class _NewEventWidgetState extends State<NewEventWidget> {
       }
     }
 
-    if (p.defaultValue != null)    // onChange() is not called on TextFormField when "initialValue" is assigned, so we need to
-      storeParam(p.defaultValue!); // store initial values explicitly
-    final isNumeric = p.type == "N";
+    if (p.comment != null)    // onChange() is not called on TextFormField when "initialValue" is assigned, so we need to
+      storeParam(p.name!); // store initial values explicitly
+    final isNumeric = p.date == "N";
     return TrixContainer(child: ListTile(
       title: Text(p.name),
-      subtitle: Text(p.description ?? "Ninguna descripción"),
+      subtitle: Text(p.comment ?? "Ninguna descripción"),
       trailing: SizedBox(
         width: 170,
         child: TextFormField(
-          initialValue: p.defaultValue,
+          initialValue: p.date,
           inputFormatters: isNumeric ? [FilteringTextInputFormatter.allow(RegExp(r'[\d.,]'))] : null,  // "." for Android, "," for iOS
           keyboardType: isNumeric ? const TextInputType.numberWithOptions(decimal: true) : null, // TODO: add Boolean type
-          decoration: InputDecoration(border: const OutlineInputBorder(), labelText: p.unit != null ? "Valor (${p.unit})" : "Valor"),
+          decoration: InputDecoration(border: const OutlineInputBorder(), labelText: p.comment != null ? "Valor (${p.name})" : "Valor"),
           onChanged: (s) {
             if (s.isEmpty) paramNames2Values.remove(p.name);
             else storeParam(s);
@@ -119,7 +118,7 @@ class _NewEventWidgetState extends State<NewEventWidget> {
     ));
   }
 
-  void _submit(MyModel model) {
+  void _submit(ElModelo model) {
     if (paramNames2Values.isNotEmpty) {
       model.addForDate(widget.date, eventNameCtrl.text, paramNames2Values, null);
       Navigator.pop(context);

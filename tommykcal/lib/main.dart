@@ -4,11 +4,11 @@ import 'package:scoped_model/scoped_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:tommyannals/model.dart';
-import 'package:tommyannals/tommylogger.dart';
-import 'package:tommyannals/inputbox.dart';
-import 'package:tommyannals/widgets/events4date.dart';
-import 'package:tommyannals/widgets/new_event.dart';
+import 'package:tommykcal/inputbox.dart';
+import 'package:tommykcal/model.dart';
+import 'package:tommykcal/tommylogger.dart';
+import 'package:tommykcal/widgets/events4date.dart';
+import 'package:tommykcal/widgets/new_event.dart';
 
 /*
 Build for iOS:
@@ -28,7 +28,7 @@ Build for Android:
 void main() {
   WidgetsFlutterBinding.ensureInitialized(); // rm error: Binding has not yet been initialized.
   initializeDateFormatting(); // to load locales for TableCalendar
-  runApp(ScopedModel(model: MyModel()..schema, child: MaterialApp(
+  runApp(ScopedModel(model: ElModelo()..schema, child: MaterialApp(
     title: "Tommy Kcal",
     theme: ThemeData(primarySwatch: Colors.orange),
     home: MyApp(),
