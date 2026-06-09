@@ -23,13 +23,15 @@ class _NewMealWidgetState extends State<NewMealWidget> {
   Widget build(BuildContext context) {
     return ScopedModelDescendant<ElModelo>(builder: (context, child, model) {
       return Scaffold(
-        appBar: AppBar(title: const Text("Tommy Kcal")),
+        appBar: AppBar(title: const Text("Añadir comida")),
         body: FutureBuilder(future: model.products, builder: (context, snapshot) {
           if (snapshot.hasError) return Text("ERROR: ${snapshot.error}");
           if (!snapshot.hasData) return const Text("ERROR: No se encontró esquema");
 
           final productNames = snapshot.data!.map((e) => e.name);
           final product = snapshot.data!.firstWhere((p) => p.name == productCtrl.text, orElse: () => Product.empty);
+          if (product.id != null)
+            weightCtrl.text = product.defaultWeight.toString();
           return Padding(
             padding: const EdgeInsetsGeometry.all(8),
             child: Column(
@@ -56,13 +58,13 @@ class _NewMealWidgetState extends State<NewMealWidget> {
                 ),
                 Text(product.id != null ? "${product.description} (${product.kcalPer100g} kcal/100g)" : ""),
                 SizedBox(
-                  width: 160,
+                  width: 210,
                   child: TextField(
                     controller: weightCtrl,
                     inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                     keyboardType: TextInputType.number,
                     textAlign: TextAlign.center,
-                    decoration: const InputDecoration(border: OutlineInputBorder(), labelText: "Peso de la comida")
+                    decoration: const InputDecoration(border: OutlineInputBorder(), labelText: "Peso de la comida (g)")
                   ),
                 ),
                 TextField(
@@ -98,9 +100,11 @@ class _NewMealWidgetState extends State<NewMealWidget> {
       if (id != null) {
         model.addForDate(widget.date, id, weight, comment);
         Navigator.pop(context);
-      }
-    } else ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Especifique los parámetros"), duration: Duration(seconds: 1))
-    );
+      } else _showMsg("Producto no existe: ${productCtrl.text}");
+    } else _showMsg("Especifique los parámetros");
+  }
+  
+  void _showMsg(String s) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(s), duration: Duration(milliseconds: 1500)));
   }
 }
