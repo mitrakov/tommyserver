@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-part 'chronicle.g.dart';
+part 'product.g.dart';
 
 @JsonSerializable()
 class Product {
@@ -7,15 +7,14 @@ class Product {
   final String name;
   final String description;
   final int kcalPer100g;
-  
-  final Map<String, dynamic> params;
-  final String? comment;
+  final int defaultWeight;
 
-  Product(this.id, this.date, this.eventName, this.params, this.comment);
-
-  Map<String, dynamic> toJson() => _$ChronicleToJson(this);
-  factory Product.fromJson(Map<String, dynamic> json) => _$ChronicleFromJson(json);
+  Product(this.id, this.name, this.description, this.kcalPer100g, this.defaultWeight);
 
   @override
-  String toString() => 'Product{date: $date, eventName: $eventName, params: $params, comment: $comment}';
+  String toString() =>
+      'Product{id: $id, name: $name, description: $description, kcalPer100g: $kcalPer100g, defaultWeight: $defaultWeight}';
+  
+  Map<String, dynamic> toJson() => _$ProductToJson(this);
+  factory Product.fromJson(Map<String, dynamic> json) => _$ProductFromJson(json);
 }
