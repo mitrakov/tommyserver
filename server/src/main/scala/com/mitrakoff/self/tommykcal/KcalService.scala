@@ -4,6 +4,9 @@ import com.mitrakoff.self.auth.Id
 import java.time.LocalDate
 
 class KcalService[F[_]](dao: KcalDao[F]):
+  def getProducts: F[List[Product]] =
+    dao.fetchProducts
+
   def getAllForDate(userId: Id, date: LocalDate): F[List[Meal]] =
     dao.fetchAllForDate(userId, date)
 

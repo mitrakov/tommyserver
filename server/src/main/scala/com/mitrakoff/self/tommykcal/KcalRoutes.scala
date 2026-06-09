@@ -30,6 +30,11 @@ class KcalRoutes[F[_]: Concurrent](authService: AuthService[F], kcalService: Kca
     }
 
     AuthMiddleware(authUser, onFailure).apply(AuthedRoutes.of {
+      // curl -H "Authorization: bearer XXX" http://mitrakoff.com:9090/kcal/products
+      case GET -> Root / `kcal` / "products" as userId =>
+        given EntityEncoder[F, List[Product]] = jsonEncoderOf
+        Ok(kcalService.getProducts)
+
       // curl -H "Authorization: bearer XXX" http://mitrakoff.com:9090/kcal/2025-09-20
       case GET -> Root / `kcal` / date as userId =>
         given EntityEncoder[F, List[Meal]] = jsonEncoderOf
@@ -40,6 +45,7 @@ class KcalRoutes[F[_]: Concurrent](authService: AuthService[F], kcalService: Kca
             response <- Ok(chronicle)
           } yield response
 
+      // curl -H "Authorization: bearer XXX" http://mitrakoff.com:9090/kcal -d '{"date":"2025-09-20", "productId":5, "weight":250}'
       case req@POST -> Root / `kcal` as userId =>
         given EntityDecoder[F, AddMeal] = jsonOf
         for {
@@ -48,6 +54,7 @@ class KcalRoutes[F[_]: Concurrent](authService: AuthService[F], kcalService: Kca
           response <- Ok(s"$rows row(s) added")
         } yield response
 
+      // curl -X DELETE -H "Authorization: bearer XXX" http://mitrakoff.com:9090/kcal/5
       case DELETE -> Root / `kcal` / LongVar(id) as userId =>
         for {
           rows <- kcalService.delete(id)

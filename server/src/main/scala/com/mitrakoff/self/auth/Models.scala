@@ -10,4 +10,4 @@ object AuthData:
   given Decoder[AuthData] = deriveDecoder
 
 object JwtTokenPayload:
-  given Codec[JwtTokenPayload] = deriveCodec
+  given Decoder[JwtTokenPayload] = deriveDecoder

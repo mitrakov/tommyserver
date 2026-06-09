@@ -34,6 +34,10 @@ CREATE TABLE kcal.main (
 */
 
 class KcalDao[F[_]](db: Db[F]):
+  def fetchProducts: F[List[Product]] =
+    import doobie.implicits.autoDerivedRead
+    db.run(sql"""SELECT product_id, name, description, kcal_per_100, default_weight_g FROM kcal.product""".query[Product].to[List])
+  
   def fetchAllForDate(userId: Id, date: LocalDate): F[List[Meal]] =
     import doobie.implicits.javatimedrivernative.JavaLocalDateMeta
     import doobie.implicits.autoDerivedRead
