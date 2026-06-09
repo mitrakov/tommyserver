@@ -119,6 +119,12 @@ class _NewEventWidgetState extends State<NewEventWidget> {
     ));
   }
 
+  @override
+  void dispose() {
+    eventNameCtrl.dispose();
+    super.dispose();
+  }
+
   void _submit(MyModel model) {
     if (paramNames2Values.isNotEmpty) {
       model.addForDate(widget.date, eventNameCtrl.text, paramNames2Values, null);

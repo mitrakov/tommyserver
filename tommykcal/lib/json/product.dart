@@ -17,4 +17,6 @@ class Product {
   
   Map<String, dynamic> toJson() => _$ProductToJson(this);
   factory Product.fromJson(Map<String, dynamic> json) => _$ProductFromJson(json);
+  
+  static Product empty = Product(null, "", "", 0, 0);
 }

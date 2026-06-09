@@ -28,11 +28,10 @@ class ElModelo extends Model {
     return _products;
   }
 
-  Future<String> addForDate(DateTime date, int productId, int weight, String? comment) {
-    return _addForDate(date, AddMeal(_extractDate(date), productId, weight, comment));
-  }
+  Future<String> addForDate(DateTime date, int productId, int weight, String? comment) =>
+      _addForDate(date, AddMeal(_extractDate(date), productId, weight, comment));
 
-  Future<String> removeByChronicleId(DateTime date, int chronicleId) => _removeItem(date, chronicleId);
+  Future<String> remove(DateTime date, int id) => _removeItem(date, id);
 
   Future<String> _addForDate(DateTime key, AddMeal item) async {
     final body = json.encode(item.toJson());

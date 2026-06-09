@@ -6,10 +6,10 @@ import 'package:tommykcal/json/meal.dart';
 import 'package:tommykcal/model.dart';
 import 'package:tommykcal/widgets/trixcontainer.dart';
 
-class EventsForDateViewer extends StatelessWidget {
+class MealForDateViewer extends StatelessWidget {
   final DateTime date;
 
-  const EventsForDateViewer(this.date);
+  const MealForDateViewer(this.date);
 
   @override
   Widget build(BuildContext context) {
@@ -30,11 +30,11 @@ class EventsForDateViewer extends StatelessWidget {
       subtitle: Text("${json.encode(item.kcalTotal)} kcal", textScaler: TextScaler.linear(0.85)),
       onLongPress: () async {
         if (await FlutterPlatformAlert.showAlert(
-            windowTitle: "Borrar evento",
+            windowTitle: "Borrar meal",
             text: "¿Estás seguro que quieres borrar: '${item.name}' (${item.date})?",
             alertStyle: AlertButtonStyle.yesNo,
             iconStyle: IconStyle.stop) == AlertButton.yesButton) {
-          model.removeByChronicleId(date, item.id);
+          model.remove(date, item.id);
         }
       },
     ));
