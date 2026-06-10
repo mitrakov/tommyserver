@@ -5,7 +5,7 @@ part 'product.g.dart';
 class Product {
   final int? id;
   final String name;
-  final String description;
+  final String? description;
   final int kcalPer100g;
   final int defaultWeight;
 
