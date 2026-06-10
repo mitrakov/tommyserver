@@ -42,9 +42,9 @@ class KcalDao[F[_]](db: Db[F]):
     import doobie.implicits.javatimedrivernative.JavaLocalDateMeta
     import doobie.implicits.autoDerivedRead
     db.run(sql"""SELECT id, date, p.name, p.kcal_per_100 * weight_g / 100, comment
-                   FROM kcal.main
-                   INNER JOIN kcal.product AS p USING(product_id)
-                   WHERE date = $date AND user_id = $userId ORDER BY id;""".query[Meal].to[List]
+                 FROM kcal.main
+                 INNER JOIN kcal.product AS p USING(product_id)
+                 WHERE date = $date AND user_id = $userId ORDER BY id;""".query[Meal].to[List]
     )
 
   def insert(date: LocalDate, userId: Id, productId: Id, weight: Int, comment: Option[String]): F[Int] =
