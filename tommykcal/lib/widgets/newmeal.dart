@@ -56,7 +56,7 @@ class _NewMealWidgetState extends State<NewMealWidget> {
                   }),
                   hideOnEmpty: true,
                 ),
-                Text(product.id != null ? "${product.description} (${product.kcalPer100g} kcal/100g)" : ""),
+                Text(product.id != null ? "${product.description ?? ""} (${product.kcalPer100g} kcal/100g)" : ""),
                 SizedBox(
                   width: 210,
                   child: TextField(
