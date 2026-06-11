@@ -66,7 +66,8 @@ class MyModel extends Model {
       XmlElement(XmlName("translation"), [], [XmlText(translation)]),
     ])]);
 
-    final response = await http.post(Uri.parse("http://mitrakoff.com:9090/lingo"), body: xml.toXmlString());
+    final response = await http.post(Uri.parse("http://mitrakoff.com:9090/lingo"),
+        headers: {"Authorization": "bearer 555"}, body: xml.toXmlString());
     if (response.statusCode == 200) return "";
     else return "Error: ${response.statusCode}; ${response.body}";
   }
@@ -78,14 +79,16 @@ class MyModel extends Model {
       XmlElement(XmlName("key"), [], [XmlText(key)]),
     ])]);
 
-    final response = await http.delete(Uri.parse("http://mitrakoff.com:9090/lingo${hard ? '/hard' : ''}"), body: xml.toXmlString());
+    final response = await http.delete(Uri.parse("http://mitrakoff.com:9090/lingo${hard ? '/hard' : ''}"),
+        headers: {"Authorization": "bearer 555"}, body: xml.toXmlString());
     if (response.statusCode == 200) return "";
     else return "Error: ${response.statusCode}; ${response.body}";
   }
 
   /// loads all language codes
   Future<Iterable<TokenPair>> _loadAll() async {
-    final response = await http.get(Uri.parse("http://mitrakoff.com:9090/lingo/all/$langCode"));
+    final response =
+        await http.get(Uri.parse("http://mitrakoff.com:9090/lingo/all/$langCode"), headers: {"Authorization": "bearer 555"});
     if (response.statusCode == 200) {
       return XmlDocument
         .parse(response.body)
@@ -98,7 +101,7 @@ class MyModel extends Model {
 
   /// loads all keys and translations from server
   Future<Iterable<String>> _loadAllLangCodes() async {
-    final response = await http.get(Uri.parse("http://mitrakoff.com:9090/lingo/all"));
+    final response = await http.get(Uri.parse("http://mitrakoff.com:9090/lingo/all"), headers: {"Authorization": "bearer 555"});
     if (response.statusCode == 200)
       return XmlDocument.parse(response.body).findAllElements("key").map((e) => e.text);
     return Future.error("Error: ${response.statusCode}; ${response.body}");
