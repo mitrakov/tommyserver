@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:math' show min;
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +18,7 @@ class MealForDateViewer extends StatelessWidget {
         if (snapshot.hasError) return Text("ERROR: ${snapshot.error}");
         if (!snapshot.hasData) return Text("Ningún dato para: $date");
         final list = snapshot.data!;
-        final total = list.map((meal) => meal.kcalTotal).sum;
+        final total = list.map((meal) => meal.kcalPer100g * meal.weight / 100).sum.toInt();
         return Column(
           crossAxisAlignment: .center,
           spacing: 10,
@@ -47,7 +46,7 @@ class MealForDateViewer extends StatelessWidget {
       minVerticalPadding: 0,
       minTileHeight: 0,
       title: Text(item.name, style: TextStyle(fontWeight: .w700)),
-      subtitle: Text("${json.encode(item.kcalTotal)} kcal"),
+      subtitle: Text("${(item.kcalPer100g * item.weight / 100).toInt()} kcal (${item.weight} g)"),
       onLongPress: () async {
         if (await FlutterPlatformAlert.showAlert(
             windowTitle: "Borrar comida",
