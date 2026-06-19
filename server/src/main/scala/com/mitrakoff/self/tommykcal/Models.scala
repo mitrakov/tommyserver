@@ -7,7 +7,7 @@ import java.time.LocalDate
 
 // === Meal ===
 case class Product(id: Option[Id], name: String, description: Option[String], kcalPer100g: Int, defaultWeight: Int)
-case class Meal(id: Id, date: LocalDate, name: String, kcalTotal: Int, comment: Option[String])
+case class Meal(id: Id, date: LocalDate, name: String, kcalPer100g: Int, weight: Int, comment: Option[String])
 case class AddMeal(date: LocalDate, productId: Id, weight: Int, comment: Option[String])
 
 // === CODECS ===
