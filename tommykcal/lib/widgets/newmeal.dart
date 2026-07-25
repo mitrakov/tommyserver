@@ -6,7 +6,7 @@ import 'package:tommykcal/json/product.dart';
 import 'package:tommykcal/model.dart';
 import 'package:tommykcal/tommylogger.dart';
 
-class NewMealWidget extends StatefulWidget {
+class NewMealWidget extends StatefulWidget { // must be Stateful
   final DateTime date;
   const NewMealWidget(this.date);
 
@@ -33,9 +33,9 @@ class _NewMealWidgetState extends State<NewMealWidget> {
           if (product.id != null)
             weightCtrl.text = product.defaultWeight.toString();
           return Padding(
-            padding: const EdgeInsetsGeometry.all(8),
+            padding: const .all(8),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
+              crossAxisAlignment: .center,
               spacing: 10,
               children: [
                 TypeAheadField<String>(
@@ -62,8 +62,8 @@ class _NewMealWidgetState extends State<NewMealWidget> {
                   child: TextField(
                     controller: weightCtrl,
                     inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                    keyboardType: TextInputType.number,
-                    textAlign: TextAlign.center,
+                    keyboardType: .number,
+                    textAlign: .center,
                     decoration: const InputDecoration(border: OutlineInputBorder(), labelText: "Peso de la comida (g)")
                   ),
                 ),
@@ -80,7 +80,8 @@ class _NewMealWidgetState extends State<NewMealWidget> {
           child: const Icon(Icons.send_rounded, size: 30),
           onPressed: () => _submit(model),
         ),
-      ));
+      ),
+    );
   }
 
   @override
@@ -97,7 +98,7 @@ class _NewMealWidgetState extends State<NewMealWidget> {
       final id = (await model.products).firstWhere((p) => p.name == productCtrl.text, orElse: () => Product.empty).id;
       final comment = commentCtrl.text.isNotEmpty ? commentCtrl.text : null;
       if (id != null) {
-        model.addForDate(widget.date, id, weight, comment);
+        model.addMealForDate(widget.date, id, weight, comment);
         Navigator.pop(context);
       } else TommyLogger.logger.error("Producto no existe: ${productCtrl.text}", 1500);
     } else TommyLogger.logger.error("Especifique los parámetros", 1500);

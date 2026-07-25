@@ -9,6 +9,7 @@ import 'package:tommykcal/model.dart';
 import 'package:tommykcal/tommylogger.dart';
 import 'package:tommykcal/widgets/meal4date.dart';
 import 'package:tommykcal/widgets/newmeal.dart';
+import 'package:tommykcal/widgets/newproduct.dart';
 
 /*
 Build for iOS:
@@ -89,14 +90,25 @@ class _MyAppState extends State<MyApp> {
           Expanded(child: MealForDateViewer(_focusedDate)),
         ],
       ),
-      floatingActionButton: Builder( // to fix error "Navigator operation requested with a context that does not include a Navigator"
-        builder: (context) {
-          return FloatingActionButton(
+      floatingActionButton: Column(
+        spacing: 10,
+        mainAxisSize: .min,
+        children: [
+          FloatingActionButton(
+            heroTag: "addMeal",
             tooltip: "Añadir comida",
+            backgroundColor: Colors.lightBlue,
             child: const Icon(Icons.add, size: 40),
             onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => NewMealWidget(_focusedDate))),
-          );
-        },
+          ),
+          FloatingActionButton(
+            heroTag: "addProduct",
+            tooltip: "Añadir producto",
+            backgroundColor: Colors.lightGreen,
+            child: const Icon(Icons.fastfood, size: 30),
+            onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => NewProductWidget())),
+          ),
+        ],
       ),
     );
   }
