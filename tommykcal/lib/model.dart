@@ -28,12 +28,14 @@ class ElModelo extends Model {
     return _products;
   }
 
-  Future<String> addForDate(DateTime date, int productId, int weight, String? comment) =>
-      _addForDate(date, AddMeal(_extractDate(date), productId, weight, comment));
+  Future<void> addMealForDate(DateTime date, int productId, int weight, String? comment) =>
+      _addMealForDate(date, AddMeal(_extractDate(date), productId, weight, comment));
 
-  Future<String> remove(DateTime date, int id) => _removeItem(date, id);
+  Future<void> addProduct(Product product) => _addProduct(product);
 
-  Future<String> _addForDate(DateTime key, AddMeal item) async {
+  Future<void> remove(DateTime date, int id) => _removeItem(date, id);
+
+  Future<void> _addMealForDate(DateTime key, AddMeal item) async {
     final body = json.encode(item.toJson());
     print("POST http://mitrakoff.com:9090/kcal: $body");
     final pass = (await SharedPreferences.getInstance()).getString("_PASS");
@@ -43,11 +45,23 @@ class ElModelo extends Model {
     if (response.statusCode == 200) {
       _date2data.remove(key);
       notifyListeners();
-      return response.body;
     } else return Future.error("Error: ${response.statusCode}; ${response.body}");
   }
 
-  Future<String> _removeItem(DateTime key, int id) async {
+  Future<void> _addProduct(Product product) async {
+    final body = json.encode(product.toJson());
+    print("POST http://mitrakoff.com:9090/kcal/product: $body");
+    final pass = (await SharedPreferences.getInstance()).getString("_PASS");
+    final response = 
+        await http.post(Uri.parse("http://mitrakoff.com:9090/kcal/product"), headers: {"Authorization": "bearer $pass"}, body: body);
+    print("> ${response.body}");
+    if (response.statusCode == 200) {
+      _products.clear();
+      notifyListeners();
+    } else return Future.error("Error: ${response.statusCode}; ${response.body}");
+  }
+
+  Future<void> _removeItem(DateTime key, int id) async {
     print("DELETE http://mitrakoff.com:9090/kcal/$id");
     final pass = (await SharedPreferences.getInstance()).getString("_PASS");
     final response = await http.delete(Uri.parse("http://mitrakoff.com:9090/kcal/$id"), headers: {"Authorization": "bearer $pass"});
@@ -55,7 +69,6 @@ class ElModelo extends Model {
     if (response.statusCode == 200) {
       _date2data.remove(key);
       notifyListeners();
-      return response.body;
     } else return Future.error("Error: ${response.statusCode}; ${response.body}");
   }
 

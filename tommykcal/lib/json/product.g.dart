@@ -11,7 +11,7 @@ Product _$ProductFromJson(Map<String, dynamic> json) => Product(
   json['name'] as String,
   json['description'] as String?,
   (json['kcalPer100g'] as num).toInt(),
-  (json['defaultWeight'] as num).toInt(),
+  (json['defaultWeight'] as num?)?.toInt(),
 );
 
 Map<String, dynamic> _$ProductToJson(Product instance) => <String, dynamic>{

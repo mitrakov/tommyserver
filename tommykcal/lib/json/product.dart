@@ -7,7 +7,7 @@ class Product {
   final String name;
   final String? description;
   final int kcalPer100g;
-  final int defaultWeight;
+  final int? defaultWeight;
 
   Product(this.id, this.name, this.description, this.kcalPer100g, this.defaultWeight);
 
