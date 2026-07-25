@@ -50,7 +50,17 @@ class KcalRoutes[F[_]: Concurrent](authService: AuthService[F], kcalService: Kca
         given EntityDecoder[F, AddMeal] = jsonOf
         for {
           request <- req.req.as[AddMeal]
-          rows <- kcalService.add(userId, request)
+          rows <- kcalService.addMeal(userId, request)
+          response <- Ok(s"$rows row(s) added")
+        } yield response
+
+      // curl -H "Authorization: bearer XXX" http://mitrakoff.com:9090/kcal/product \
+      // -d '{"name":"Apple", "description":"optional", "kcalPer100g":52, "defaultWeight":100}'
+      case req@POST -> Root / `kcal` / "product" as userId =>
+        given EntityDecoder[F, Product] = jsonOf
+        for {
+          request <- req.req.as[Product]
+          rows <- kcalService.addProduct(userId, request)
           response <- Ok(s"$rows row(s) added")
         } yield response
 

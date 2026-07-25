@@ -36,7 +36,7 @@ CREATE TABLE kcal.main (
 class KcalDao[F[_]](db: Db[F]):
   def fetchProducts: F[List[Product]] =
     import doobie.implicits.autoDerivedRead
-    db.run(sql"""SELECT product_id, name, description, kcal_per_100, default_weight_g FROM kcal.product""".query[Product].to[List])
+    db.run(sql"SELECT product_id, name, description, kcal_per_100, default_weight_g FROM kcal.product".query[Product].to[List])
   
   def fetchAllForDate(userId: Id, date: LocalDate): F[List[Meal]] =
     import doobie.implicits.javatimedrivernative.JavaLocalDateMeta
@@ -47,12 +47,20 @@ class KcalDao[F[_]](db: Db[F]):
                  WHERE date = $date AND user_id = $userId ORDER BY id;""".query[Meal].to[List]
     )
 
-  def insert(date: LocalDate, userId: Id, productId: Id, weight: Int, comment: Option[String]): F[Int] =
+  def insertMeal(date: LocalDate, userId: Id, productId: Id, weight: Int, comment: Option[String]): F[Int] =
     import doobie.implicits.javatimedrivernative.JavaLocalDateMeta
     db.run(
       sql"""INSERT INTO kcal.main (date, user_id, product_id, weight_g, comment)
                    VALUES ($date, $userId, $productId, $weight, $comment);""".update.run
     )
 
-  def deleteById(id: Id): F[Int] =
-    db.run(sql"""DELETE FROM kcal.main WHERE id = $id""".update.run)
+  def insertProduct(p: Product): F[Int] =
+    val fragment = p.defaultWeight match {
+      case Some(defaultWeight) => sql"""INSERT INTO kcal.product (name, description, kcal_per_100, default_weight_g)
+                                               VALUES (${p.name}, ${p.description}, ${p.kcalPer100g}, $defaultWeight);"""
+      case None                => sql"""INSERT INTO kcal.product (name, description, kcal_per_100)
+                                               VALUES (${p.name}, ${p.description}, ${p.kcalPer100g});"""
+    }
+    db.run(fragment.update.run)
+
+  def deleteById(id: Id): F[Int] = db.run(sql"DELETE FROM kcal.main WHERE id = $id".update.run)
