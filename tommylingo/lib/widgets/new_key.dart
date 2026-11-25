@@ -53,7 +53,7 @@ class NewKey extends StatelessWidget {
                   itemBuilder: (context, suggestion) => ListTile(title: Text(suggestion)),
                   onSelected: (newValue) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text(model.getValue(newValue)), duration: const Duration(seconds: 1)));
+                      SnackBar(content: Text(model.getValue(newValue)), duration: const Duration(milliseconds: 2000)));
                     keyController.text = newValue;
                   },
                   hideOnEmpty: true,
@@ -82,14 +82,14 @@ class NewKey extends StatelessWidget {
         final error = await model.deleteTranslation(token!.key, true);
         if (error.isNotEmpty)
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(error), duration: const Duration(seconds: 2), backgroundColor: Colors.red)
+            SnackBar(content: Text(error), duration: const Duration(milliseconds: 1600), backgroundColor: Colors.red)
           );
       }
 
       final error = await model.upsertTranslation(key, translation);
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text(error.isEmpty ? "Success!" : error),
-        duration: const Duration(seconds: 2),
+        duration: const Duration(milliseconds: 1600),
         backgroundColor: error.isEmpty ? Colors.green : Colors.red,
       ));
       if (error.isEmpty)
