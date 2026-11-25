@@ -72,7 +72,7 @@ class MyApp extends StatelessWidget {
                           if (snapshot.data!.key.isNotEmpty)
                             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                               content: Text(snapshot.data!.key),
-                              duration: const Duration(milliseconds: 1300),
+                              duration: const Duration(milliseconds: 2000),
                               behavior: SnackBarBehavior.floating,
                               margin: const .only(top: 1),
                             ));
